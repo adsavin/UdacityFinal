@@ -19,6 +19,20 @@ public class BaseModel implements BaseColumns {
     public static final String COL_VOLUME = "volume";
     public static final String COL_VALUE = "value";
 
+    public static final int ID = 0;
+    public static final int CHANGED = 1;
+    public static final int CHANGED_PERCENT = 2;
+    public static final int CLOSING = 3;
+    public static final int CODE = 4;
+    public static final int DATE = 5;
+    public static final int HIGH = 6;
+    public static final int LOW = 7;
+    public static final int NAME = 8;
+    public static final int OPENING = 9;
+    public static final int PREVIOUS_DAY = 10;
+    public static final int VALUE = 11;
+    public static final int VOLUME = 12;
+
     public static final String CREATED_COLUMN = _ID + " INTEGER PRIMARY KEY," +
             COL_CHANGED + " REAL NOT NULL, " +
             COL_CHANGED_PERCENT + " REAL NOT NULL, " +
@@ -36,7 +50,7 @@ public class BaseModel implements BaseColumns {
     private String code;
     private String name;
     private long previousDay;
-    private long date;
+    private String date;
     private long opening;
     private long closing;
     private long changed;
@@ -70,11 +84,11 @@ public class BaseModel implements BaseColumns {
         this.previousDay = previousDay;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

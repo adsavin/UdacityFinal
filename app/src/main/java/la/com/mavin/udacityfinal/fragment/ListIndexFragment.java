@@ -11,18 +11,19 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
+import la.com.mavin.udacityfinal.task.IndexListTask;
 
 /**
- * Created by Adsavin on 3/30/2015.
+ * Created by adsavin on 30/03/15.
  */
-public class IndexFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ListIndexFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>  {
+
 
     private IndexAdapter indexAdapter;
     private ListView listview_index;
@@ -46,7 +47,7 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
             Index.COL_VOLUME
     };
 
-    public IndexFragment() {
+    public ListIndexFragment() {
     }
 
     public interface Callback {
@@ -54,26 +55,36 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
 
-        View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
-        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
-        this.listview_index.setAdapter(this.indexAdapter);
-        this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
-                if(cursor != null) {
-                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
-                }
-                position = i;
-            }
-        });
+        IndexListTask indexListTask = new IndexListTask(getActivity());
+        indexListTask.execute();
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
-            this.position = savedInstanceState.getInt(SELECTED_KEY);
-        }
+        View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
+//        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
+//        this.listview_index.setAdapter(this.indexAdapter);
+//        this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+//                if(cursor != null) {
+//                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
+//                }
+//                position = i;
+//            }
+//        });
+//
+//        if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+//            this.position = savedInstanceState.getInt(SELECTED_KEY);
+//        }
 
         return rootView;
     }

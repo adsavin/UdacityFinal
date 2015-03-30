@@ -5,13 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import la.com.mavin.udacityfinal.model.Index;
+import la.com.mavin.udacityfinal.model.IndexCode;
 import la.com.mavin.udacityfinal.model.Stock;
+import la.com.mavin.udacityfinal.model.StockCode;
 
 /**
  * Created by Adsavin on 3/30/2015.
  */
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     static final String DATABASE_NAME = "weather.db";
 
     public DbHelper(Context context) {
@@ -20,7 +22,19 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + Index.TABLE_NAME + " (" +
+        String sql = "CREATE TABLE " + IndexCode.TABLE_NAME + " (" +
+                IndexCode.COL_CODE + " TEXT PRIMARY KEY, " +
+                IndexCode.COL_NAME + " TEXT NOT NULL" +
+                " );";
+        db.execSQL(sql);
+
+        sql = "CREATE TABLE " + StockCode.TABLE_NAME + " (" +
+                StockCode.COL_CODE + " TEXT PRIMARY KEY, " +
+                StockCode.COL_NAME + " TEXT NOT NULL" +
+                " );";
+        db.execSQL(sql);
+
+        sql = "CREATE TABLE " + Index.TABLE_NAME + " (" +
                 Index.CREATED_COLUMN +
                 " );";
         db.execSQL(sql);

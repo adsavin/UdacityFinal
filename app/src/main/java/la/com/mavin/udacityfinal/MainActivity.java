@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
             btn_index.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), IndexActivity.class);
+                    Intent intent = new Intent(getActivity(), IndexListActivity.class);
                     startActivity(intent);
                 }
             });
@@ -74,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
             btn_stock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), StockActivity.class);
+                    Intent intent = new Intent(getActivity(), StockListActivity.class);
                     startActivity(intent);
                 }
             });

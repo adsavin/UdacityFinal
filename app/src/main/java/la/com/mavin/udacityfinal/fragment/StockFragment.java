@@ -18,7 +18,7 @@ public class StockFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_stock, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_stock_list, container, false);
         return rootView;
     }
 
