@@ -62,7 +62,8 @@ public class IndexProvider extends ContentProvider {
 
         matcher.addURI(authority, Contract.PATH_INDEX_LIST, INDEX_LIST);
         matcher.addURI(authority, Contract.PATH_INDEX, INDEX);
-        matcher.addURI(authority, Contract.PATH_INDEX +);
+        matcher.addURI(authority, Contract.PATH_INDEX + "/startdate/*", INDEX_WITH_STARTDATE);
+        matcher.addURI(authority, Contract.PATH_INDEX + "/startenddate/*", INDEX_WITH_STARTDATE);
 
         matcher.addURI(authority, Contract.PATH_STOCK, STOCK);
 
