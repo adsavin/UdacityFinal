@@ -5,24 +5,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import la.com.mavin.udacityfinal.fragment.IndexFragment;
+import la.com.mavin.udacityfinal.fragment.StockFragment;
 
 
-public class IndexActivity extends ActionBarActivity {
+public class StockActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index);
+        setContentView(R.layout.activity_stock);
         if (savedInstanceState == null) {
-            IndexFragment indexFragment = new IndexFragment();
-            Bundle bundle = new Bundle();
-//            bundle.putParcelable();
-
-            indexFragment.setArguments(bundle);
-
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, indexFragment)
+                    .add(R.id.container, new StockFragment())
                     .commit();
         }
     }
@@ -31,7 +25,7 @@ public class IndexActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_index, menu);
+        getMenuInflater().inflate(R.menu.menu_stock, menu);
         return true;
     }
 
@@ -49,6 +43,5 @@ public class IndexActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }

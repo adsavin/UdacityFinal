@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -62,15 +61,24 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            Button btn_ok = (Button) rootView.findViewById(R.id.btn_ok);
-            Toast.makeText(getActivity(), btn_ok.getText(), Toast.LENGTH_LONG).show();
-            btn_ok.setOnClickListener(new View.OnClickListener() {
+            Button btn_index = (Button) rootView.findViewById(R.id.btn_index);
+            btn_index.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), IndexActivity.class);
                     startActivity(intent);
                 }
             });
+
+            Button btn_stock = (Button) rootView.findViewById(R.id.btn_stock);
+            btn_stock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), StockActivity.class);
+                    startActivity(intent);
+                }
+            });
+
             return rootView;
         }
     }

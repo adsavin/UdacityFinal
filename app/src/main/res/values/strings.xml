@@ -7,5 +7,7 @@
 
     <string name="agree">By Clicking OK, it means you are agree to terms and condition of the Lao Securities Exchange</string>
     <string name="title_activity_index">IndexActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_stock">StockActivity</string>
+    <string name="stock">Stock</string>
+    <string name="index">Index</string>
 </resources>
