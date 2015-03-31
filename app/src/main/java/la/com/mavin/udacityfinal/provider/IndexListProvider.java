@@ -87,6 +87,7 @@ public class IndexListProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
+        Log.d(LOG_TAG, "bulkInsert...");
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = URI_MATCHER.match(uri);
         int count = 0;
@@ -103,6 +104,7 @@ public class IndexListProvider extends ContentProvider {
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
+                db.close();
             }
         } else {
             throw new UnsupportedOperationException("Unknown Uri: " + uri);
@@ -119,10 +121,9 @@ public class IndexListProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = Contract.CONTENT_AUTHORITY;
         matcher.addURI(authority, IndexCode.PATH, INDEX_LIST);
-        matcher.addURI(authority, IndexCode.PATH + "/list", INDEX_LISTBY);
+        matcher.addURI(authority, IndexCode.PATH + "/all", INDEX_LISTBY);
         matcher.addURI(authority, IndexCode.PATH + "/#", INDEX_GET);
         return matcher;
     }
-
 
 }

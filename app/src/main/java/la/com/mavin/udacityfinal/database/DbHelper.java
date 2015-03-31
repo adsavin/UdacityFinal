@@ -14,7 +14,7 @@ import la.com.mavin.udacityfinal.model.StockCode;
  */
 public class DbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
-    static final String DATABASE_NAME = "weather.db";
+    static final String DATABASE_NAME = "stocx.db";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

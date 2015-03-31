@@ -21,6 +21,7 @@ public class IndexCode implements BaseColumns {
     private String code;
     private String name;
     public static final String PATH = "indexlist";
+    public static final Uri CONTENT_URI = Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + PATH;
 
     public static IndexCode toObject(Cursor cursor) {
@@ -48,15 +49,15 @@ public class IndexCode implements BaseColumns {
 
 
     public static Uri getIndexListUri() {
-        Uri uri = Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).appendPath("list").build();
+        Uri uri = CONTENT_URI.buildUpon().appendPath("all").build();
         return uri;
     }
 
     public static Uri getIndexUri() {
-        return Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
+        return CONTENT_URI;
     }
 
     public static Uri getIndexUri(long id) {
-        return ContentUris.withAppendedId(Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build(), id);
+        return ContentUris.withAppendedId(CONTENT_URI, id);
     }
 }

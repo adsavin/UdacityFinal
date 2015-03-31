@@ -17,8 +17,10 @@ import android.widget.ListView;
 
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexListAdapter;
+import la.com.mavin.udacityfinal.database.DbHelper;
 import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
+import la.com.mavin.udacityfinal.task.IndexListTask;
 
 /**
  * Created by adsavin on 30/03/15.
@@ -66,6 +68,8 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.indexListAdapter = new IndexListAdapter(getActivity(), null, 0);
 
+        new IndexListTask(getActivity()).execute();
+
         View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
         this.listview_index.setAdapter(this.indexListAdapter);
@@ -104,6 +108,19 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        DbHelper dbHelper = new DbHelper(getActivity());
+        String[] col = {IndexCode.COL_CODE, IndexCode.COL_NAME};
+        Cursor cursor = dbHelper.getReadableDatabase().query(
+                IndexCode.TABLE_NAME,
+                col,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        Log.d(LOG_TAG, "Cursor: " + cursor.getCount());
         Log.d(LOG_TAG, "OnCreatLoader");
         return new CursorLoader(
                 getActivity(),
