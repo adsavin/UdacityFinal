@@ -1,5 +1,7 @@
 package la.com.mavin.udacityfinal.model;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -19,6 +21,7 @@ public class IndexCode implements BaseColumns {
     private String code;
     private String name;
     public static final String PATH = "indexlist";
+    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + PATH;
 
     public static IndexCode toObject(Cursor cursor) {
         IndexCode model = new IndexCode();
@@ -45,7 +48,15 @@ public class IndexCode implements BaseColumns {
 
 
     public static Uri getIndexListUri() {
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).appendPath("list").build();
+        return uri;
+    }
+
+    public static Uri getIndexUri() {
         return Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
     }
 
+    public static Uri getIndexUri(long id) {
+        return ContentUris.withAppendedId(Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build(), id);
+    }
 }

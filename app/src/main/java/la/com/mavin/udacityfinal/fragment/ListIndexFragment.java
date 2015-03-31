@@ -8,24 +8,25 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import la.com.mavin.udacityfinal.R;
-import la.com.mavin.udacityfinal.adapter.IndexAdapter;
+import la.com.mavin.udacityfinal.adapter.IndexListAdapter;
 import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
-import la.com.mavin.udacityfinal.task.IndexListTask;
 
 /**
  * Created by adsavin on 30/03/15.
  */
 public class ListIndexFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>  {
+    private final String LOG_TAG = getClass().getSimpleName();
 
-
-    private IndexAdapter indexAdapter;
+    private IndexListAdapter indexListAdapter;
     private ListView listview_index;
     private int position = ListView.INVALID_POSITION;
     private String SELECTED_KEY = "selected_index_position";
@@ -63,28 +64,25 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
-
-        IndexListTask indexListTask = new IndexListTask(getActivity());
-        indexListTask.execute();
+        this.indexListAdapter = new IndexListAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
-//        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
-//        this.listview_index.setAdapter(this.indexAdapter);
-//        this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
-//                if(cursor != null) {
-//                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
-//                }
-//                position = i;
-//            }
-//        });
-//
-//        if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
-//            this.position = savedInstanceState.getInt(SELECTED_KEY);
-//        }
+        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
+        this.listview_index.setAdapter(this.indexListAdapter);
+        this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                if(cursor != null) {
+                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
+                }
+                position = i;
+            }
+        });
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            this.position = savedInstanceState.getInt(SELECTED_KEY);
+        }
 
         return rootView;
     }
@@ -106,6 +104,7 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "OnCreatLoader");
         return new CursorLoader(
                 getActivity(),
                 IndexCode.getIndexListUri(),
@@ -119,7 +118,10 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        this.indexAdapter.swapCursor(data);
+        Log.d(LOG_TAG, "onLoadFinished");
+//        Log.d(LOG_TAG, "rows=" + data.getCount());
+        this.indexListAdapter.swapCursor(data);
+
         if(this.position != ListView.INVALID_POSITION) {
             this.listview_index.smoothScrollToPosition(this.position);
         }
@@ -127,6 +129,6 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        this.indexAdapter.swapCursor(null);
+        this.indexListAdapter.swapCursor(null);
     }
 }

@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+
+import la.com.mavin.udacityfinal.model.IndexCode;
 
 /**
  * Created by adsavin on 30/03/15.
@@ -50,7 +50,6 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             StringBuilder stringBuilder = new StringBuilder();
-            List<ContentValues> list = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
@@ -62,9 +61,24 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
             String jsonIndexList = stringBuilder.toString();
             JSONObject indices = new JSONObject(jsonIndexList);
             JSONArray indexList = indices.getJSONArray("indices");
-            for (int i=0;i<indexList.length();  i++) {
-                JSONObject o = indexList.getJSONObject(i);
-                Log.d(LOG_TAG, o.getString("name"));
+
+            if(indexList.length() > 0) {
+                ContentValues[] values = new ContentValues[indexList.length()];
+                for (int i = 0; i < indexList.length(); i++) {
+                    JSONObject o = indexList.getJSONObject(i);
+
+                    ContentValues value = new ContentValues();
+                    value.put(IndexCode.COL_CODE, o.getString(IndexCode.COL_CODE));
+                    value.put(IndexCode.COL_NAME, o.getString(IndexCode.COL_NAME));
+                    values[i] = value;
+                }
+
+                int rows = 0;
+                if (values.length > 0) {
+                    rows = context.getContentResolver().bulkInsert(IndexCode.getIndexUri(), values);
+                }
+
+                Log.d(LOG_TAG, "Inserted " + rows + " row(s).");
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.toString());

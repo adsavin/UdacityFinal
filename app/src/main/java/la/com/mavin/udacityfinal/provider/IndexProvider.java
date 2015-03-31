@@ -9,7 +9,6 @@ import android.net.Uri;
 import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.database.DbHelper;
 import la.com.mavin.udacityfinal.model.Index;
-import la.com.mavin.udacityfinal.model.IndexCode;
 
 /**
  * Created by Adsavin on 3/30/2015.
@@ -18,7 +17,6 @@ public class IndexProvider extends ContentProvider {
     private DbHelper dbHelper;
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
     private static final int INDEX = 100;
-    private static final int INDEX_LIST = 101;
     private static final int INDEX_WITH_DATE = 102;
     private static final int STOCK = 200;
     private static final int STOCK_LIST = 201;
@@ -59,7 +57,6 @@ public class IndexProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = Contract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, IndexCode.PATH, INDEX_LIST);
         matcher.addURI(authority, Index.PATH, INDEX);
         matcher.addURI(authority, Index.PATH + "/*/", INDEX_WITH_DATE);// /index/001/startdate=&enddate=
 

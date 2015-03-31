@@ -39,6 +39,10 @@
             android:authorities="la.com.mavin.udacityfinal"
             android:name=".provider.IndexProvider"
             />
+        <provider
+            android:authorities="la.com.mavin.udacityfinal"
+            android:name=".provider.IndexListProvider"
+            />
     </application>
 
 </manifest>
