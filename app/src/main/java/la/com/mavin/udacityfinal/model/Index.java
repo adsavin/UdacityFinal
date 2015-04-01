@@ -1,5 +1,7 @@
 package la.com.mavin.udacityfinal.model;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -12,6 +14,26 @@ import la.com.mavin.udacityfinal.database.Contract;
 public class Index extends BaseModel implements BaseColumns {
     public static final String TABLE_NAME = "lsx_index";
     public static final String PATH = "index";
+
+    public static final Uri CONTENT_URI = Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
+    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + PATH;
+    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + PATH;
+
+    public static final String[] COLUMNS = {
+            Index.TABLE_NAME + "." + IndexCode._ID,
+            Index.COL_CHANGED,
+                    Index.COL_CHANGED_PERCENT,
+                    Index.COL_CLOSING,
+                    Index.COL_CODE,
+                    Index.COL_DATE,
+                    Index.COL_HIGH,
+                    Index.COL_LOW,
+                    Index.COL_NAME,
+                    Index.COL_OPENING,
+                    Index.COL_PREVIOUS_DAY,
+                    Index.COL_VALUE,
+                    Index.COL_VOLUME
+    };
 
     public static Index toObject(Cursor cursor) {
         Index model = new Index();
@@ -31,17 +53,32 @@ public class Index extends BaseModel implements BaseColumns {
         return model;
     }
 
+    public static Uri getIndexUri(long id) {
+        return ContentUris.withAppendedId(CONTENT_URI, id);
+    }
+
+    public static Uri getIndexUri() {
+        return CONTENT_URI;
+    }
+
     public static Uri getIndexUri(String code) {
-        return Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH)
+        return CONTENT_URI.buildUpon()
                 .appendQueryParameter("code", code)
                 .build();
     }
 
-    public static Uri getIndexUri(String code, String startdate, String enddate) {
-        return Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH)
+    public static Uri getIndexUri(String code, String startDate) {
+        return CONTENT_URI.buildUpon()
                 .appendQueryParameter("code", code)
-                .appendQueryParameter("fromDate", startdate)
-                .appendQueryParameter("toDate", enddate)
+                .appendQueryParameter("startDate", startDate)
+                .build();
+    }
+
+    public static Uri getIndexUri(String code, String startDate, String endDate) {
+        return CONTENT_URI.buildUpon()
+                .appendQueryParameter("code", code)
+                .appendQueryParameter("startDate", startDate)
+                .appendQueryParameter("endDate", endDate)
                 .build();
     }
 }

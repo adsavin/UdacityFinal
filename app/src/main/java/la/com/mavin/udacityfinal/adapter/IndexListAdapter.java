@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import la.com.mavin.udacityfinal.R;
-import la.com.mavin.udacityfinal.model.Index;
+import la.com.mavin.udacityfinal.model.IndexCode;
 
 
 /**
@@ -29,7 +29,7 @@ public class IndexListAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Index index = Index.toObject(cursor);
-        ((TextView) view.findViewById(R.id.item_index)).setText(index.getCode() + " - " + index.getName());
+        IndexCode indexCode = IndexCode.toObject(cursor);
+        ((TextView) view.findViewById(R.id.item_index)).setText(indexCode.getCode() + " - " + indexCode.getName());
     }
 }

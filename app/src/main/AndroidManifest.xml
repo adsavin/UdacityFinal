@@ -3,7 +3,7 @@
     package="la.com.mavin.udacityfinal" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -36,9 +36,28 @@
         </activity>
 
         <provider
-            android:authorities="la.com.mavin.udacityfinal"
             android:name=".provider.IndexListProvider"
-            />
+            android:authorities="la.com.mavin.udacityfinal" />
+        <provider
+            android:authorities="la.com.mavin.udacityfinal"
+            android:name=".provider.IndexProvider" />
+
+        <activity
+            android:name=".IndexDailyActivity"
+            android:label="@string/title_activity_index_daily"
+            android:parentActivityName=".IndexListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="la.com.mavin.udacityfinal.IndexListActivity" />
+        </activity>
+        <activity
+            android:name=".IndexDetailActivity"
+            android:label="@string/title_activity_index_detail"
+            android:parentActivityName=".IndexDailyActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="la.com.mavin.udacityfinal.IndexDailyActivity" />
+        </activity>
     </application>
 
 </manifest>

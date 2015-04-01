@@ -93,7 +93,6 @@ public class IndexListProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        Log.d(LOG_TAG, "bulkInsert...");
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = URI_MATCHER.match(uri);
         int count = 0;
@@ -102,10 +101,7 @@ public class IndexListProvider extends ContentProvider {
 
             try {
                 for (ContentValues value : values) {
-                    Log.d(LOG_TAG, "Before Insert....");
                     long id = db.insert(IndexCode.TABLE_NAME, null, value);
-//                    long id = 1;
-                    Log.d(LOG_TAG, "ID=" +id);
                     if (id != -1) {
                         count++;
                     }

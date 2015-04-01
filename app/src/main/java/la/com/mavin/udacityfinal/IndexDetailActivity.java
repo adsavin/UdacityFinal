@@ -1,30 +1,24 @@
 package la.com.mavin.udacityfinal;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-import la.com.mavin.udacityfinal.fragment.ListIndexFragment;
 
-
-public class IndexListActivity extends ActionBarActivity implements ListIndexFragment.Callback {
+public class IndexDetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index);
+        setContentView(R.layout.activity_index_detail);
         if (savedInstanceState == null) {
-            ListIndexFragment indexFragment = new ListIndexFragment();
-            Bundle bundle = new Bundle();
-//            bundle.putParcelable();
-
-            indexFragment.setArguments(bundle);
-
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, indexFragment)
+                    .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
     }
@@ -33,7 +27,7 @@ public class IndexListActivity extends ActionBarActivity implements ListIndexFra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_index, menu);
+        getMenuInflater().inflate(R.menu.menu_index_detail, menu);
         return true;
     }
 
@@ -52,10 +46,19 @@ public class IndexListActivity extends ActionBarActivity implements ListIndexFra
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemSelected(Uri uri) {
-        Intent intent = new Intent(getApplicationContext(), IndexDailyActivity.class);
-        intent.setData(uri);
-        startActivity(intent);
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_index_detail, container, false);
+            return rootView;
+        }
     }
 }

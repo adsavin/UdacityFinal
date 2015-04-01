@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.ListView;
 
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexListAdapter;
-import la.com.mavin.udacityfinal.database.DbHelper;
 import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
 import la.com.mavin.udacityfinal.task.IndexListTask;
@@ -34,11 +32,7 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
     private String SELECTED_KEY = "selected_index_position";
 
     private final int LOADER = 0;
-    private final String[] COLUMNS = {
-            IndexCode.TABLE_NAME + "." + IndexCode._ID,
-            IndexCode.COL_CODE,
-            IndexCode.COL_NAME
-    };
+
 
     public ListIndexFragment() {
     }
@@ -50,16 +44,14 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.indexListAdapter = new IndexListAdapter(getActivity(), null, 0);
-
         new IndexListTask(getActivity()).execute();
 
+        this.indexListAdapter = new IndexListAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
         this.listview_index.setAdapter(this.indexListAdapter);
@@ -98,35 +90,18 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        DbHelper dbHelper = new DbHelper(getActivity());
-        String[] col = {IndexCode.COL_CODE, IndexCode.COL_NAME};
-        Cursor cursor = dbHelper.getReadableDatabase().query(
-                IndexCode.TABLE_NAME,
-                col,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        Log.d(LOG_TAG, "Cursor: " + cursor.getCount());
-        Log.d(LOG_TAG, "OnCreatLoader");
         return new CursorLoader(
                 getActivity(),
                 IndexCode.getIndexListUri(),
-                COLUMNS,
+                IndexCode.COLUMNS,
                 null,
                 null,
                 Index.COL_CODE
         );
-
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(LOG_TAG, "onLoadFinished");
-//        Log.d(LOG_TAG, "rows=" + data.getCount());
         this.indexListAdapter.swapCursor(data);
 
         if(this.position != ListView.INVALID_POSITION) {

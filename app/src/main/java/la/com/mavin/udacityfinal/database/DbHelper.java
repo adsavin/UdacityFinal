@@ -13,7 +13,7 @@ import la.com.mavin.udacityfinal.model.StockCode;
  * Created by Adsavin on 3/30/2015.
  */
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "stocx.db";
 
     public DbHelper(Context context) {

@@ -3,6 +3,7 @@ package la.com.mavin.udacityfinal.task;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -64,10 +65,24 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
             String jsonIndexList = stringBuilder.toString();
             JSONObject indices = new JSONObject(jsonIndexList);
             JSONArray indexList = indices.getJSONArray("indices");
-            UriMatcher matcher = buildUriMatcher();
-            if(indexList.length() > 0) {
-                ContentValues[] values = new ContentValues[indexList.length()];
-                for (int i = 0; i < indexList.length(); i++) {
+
+            Cursor cursor = context.getContentResolver().query(
+                    IndexCode.getIndexListUri(),
+                    IndexCode.COLUMNS,
+                    null,
+                    null,
+                    null
+            );
+
+            Log.d(LOG_TAG, "Cursor=" + cursor.getCount() + ",Json=" + indexList.length());
+
+            if(cursor.getCount() < indexList.length()) {
+                ContentValues[] values = new ContentValues[indexList.length() - cursor.getCount()];
+                int j = 0;
+                if(cursor.getCount() > 0) {
+                    j = cursor.getCount();
+                }
+                for (int i = j; i < indexList.length(); i++) {
                     JSONObject o = indexList.getJSONObject(i);
 
                     ContentValues value = new ContentValues();

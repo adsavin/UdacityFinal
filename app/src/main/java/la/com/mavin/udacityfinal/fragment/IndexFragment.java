@@ -18,6 +18,8 @@ import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
+import la.com.mavin.udacityfinal.provider.IndexProvider;
+import la.com.mavin.udacityfinal.task.IndexTask;
 
 /**
  * Created by Adsavin on 3/30/2015.
@@ -28,6 +30,7 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
     private ListView listview_index;
     private int position = ListView.INVALID_POSITION;
     private String SELECTED_KEY = "selected_index_position";
+    private Uri selectedUri;
 
     private final int LOADER = 0;
     private final String[] COLUMNS = {
@@ -55,10 +58,15 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            selectedUri = bundle.getParcelable("URI");
+        }
+        new IndexTask(getActivity()).execute(IndexProvider.getIndexCodeFromUri(selectedUri));
 
         View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
+        this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
         this.listview_index.setAdapter(this.indexAdapter);
         this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

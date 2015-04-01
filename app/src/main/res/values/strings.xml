@@ -10,4 +10,7 @@
     <string name="title_activity_stock">StockActivity</string>
     <string name="stock">Stock</string>
     <string name="index">Index</string>
+    <string name="title_activity_index_daily">IndexDailyActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_index_detail">IndexDetailActivity</string>
 </resources>

@@ -7,24 +7,24 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import la.com.mavin.udacityfinal.fragment.ListIndexFragment;
+import la.com.mavin.udacityfinal.fragment.IndexFragment;
 
 
-public class IndexListActivity extends ActionBarActivity implements ListIndexFragment.Callback {
+public class IndexDailyActivity extends ActionBarActivity implements IndexFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index);
+        setContentView(R.layout.activity_index_daily);
         if (savedInstanceState == null) {
-            ListIndexFragment indexFragment = new ListIndexFragment();
-            Bundle bundle = new Bundle();
-//            bundle.putParcelable();
+            Bundle arguments = new Bundle();
+            arguments.putParcelable("URI", getIntent().getData());
 
-            indexFragment.setArguments(bundle);
+            IndexFragment fragment = new IndexFragment();
+            fragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, indexFragment)
+                    .add(R.id.index_daily_container, fragment)
                     .commit();
         }
     }
@@ -33,7 +33,7 @@ public class IndexListActivity extends ActionBarActivity implements ListIndexFra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_index, menu);
+        getMenuInflater().inflate(R.menu.menu_index_daily, menu);
         return true;
     }
 
@@ -54,7 +54,7 @@ public class IndexListActivity extends ActionBarActivity implements ListIndexFra
 
     @Override
     public void onItemSelected(Uri uri) {
-        Intent intent = new Intent(getApplicationContext(), IndexDailyActivity.class);
+        Intent intent = new Intent(getApplicationContext(), IndexDetailActivity.class);
         intent.setData(uri);
         startActivity(intent);
     }

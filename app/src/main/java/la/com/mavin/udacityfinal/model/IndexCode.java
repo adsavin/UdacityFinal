@@ -24,6 +24,12 @@ public class IndexCode implements BaseColumns {
     public static final Uri CONTENT_URI = Contract.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + Contract.CONTENT_AUTHORITY + "/" + PATH;
 
+    public static final String[] COLUMNS = {
+            IndexCode.TABLE_NAME + "." + IndexCode._ID,
+            IndexCode.COL_CODE,
+            IndexCode.COL_NAME
+    };
+
     public static IndexCode toObject(Cursor cursor) {
         IndexCode model = new IndexCode();
         model.setName(cursor.getString(NAME));
