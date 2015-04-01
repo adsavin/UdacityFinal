@@ -18,9 +18,9 @@ import la.com.mavin.udacityfinal.model.IndexCode;
 public class IndexListProvider extends ContentProvider {
     private final String LOG_TAG = getClass().getSimpleName();
     private DbHelper dbHelper;
-    private static final int INDEX_LIST = 101;
-    private static final int INDEX_GET = 111;
-    private static final int INDEX_LISTBY = 121;
+    public static final int INDEX_LIST = 101;
+    public static final int INDEX_GETBYID = 111;
+    public static final int INDEX_LISTALL = 121;
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
 
     @Override
@@ -33,7 +33,7 @@ public class IndexListProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
         Log.d(LOG_TAG, uri.toString());
-        if (URI_MATCHER.match(uri) == INDEX_LISTBY) {
+        if (URI_MATCHER.match(uri) == INDEX_LISTALL) {
             retCursor = dbHelper.getReadableDatabase().query(
                     IndexCode.TABLE_NAME,
                     projection,
@@ -63,13 +63,19 @@ public class IndexListProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        Log.d(LOG_TAG, "Insert...");
         if (URI_MATCHER.match(uri) == INDEX_LIST) {
             long id = dbHelper.getWritableDatabase().insert(
                     IndexCode.TABLE_NAME,
                     null,
                     values
             );
-            return IndexCode.getIndexUri(id);
+            Log.d(LOG_TAG, "ID=" +id);
+            if(id > 0) {
+                return IndexCode.getIndexUri(id);
+            } else {
+                throw new android.database.SQLException("Failed to insert row into " + uri);
+            }
         } else {
             throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -96,8 +102,11 @@ public class IndexListProvider extends ContentProvider {
 
             try {
                 for (ContentValues value : values) {
-                    long _id = db.insert(IndexCode.TABLE_NAME, null, value);
-                    if (_id != -1) {
+                    Log.d(LOG_TAG, "Before Insert....");
+                    long id = db.insert(IndexCode.TABLE_NAME, null, value);
+//                    long id = 1;
+                    Log.d(LOG_TAG, "ID=" +id);
+                    if (id != -1) {
                         count++;
                     }
                 }
@@ -118,11 +127,11 @@ public class IndexListProvider extends ContentProvider {
     }
 
     private static UriMatcher buildUriMatcher() {
-        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = Contract.CONTENT_AUTHORITY;
         matcher.addURI(authority, IndexCode.PATH, INDEX_LIST);
-        matcher.addURI(authority, IndexCode.PATH + "/all", INDEX_LISTBY);
-        matcher.addURI(authority, IndexCode.PATH + "/#", INDEX_GET);
+        matcher.addURI(authority, IndexCode.PATH + "/all", INDEX_LISTALL);
+        matcher.addURI(authority, IndexCode.PATH + "/#", INDEX_GETBYID);
         return matcher;
     }
 

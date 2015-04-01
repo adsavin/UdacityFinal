@@ -35,19 +35,9 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
 
     private final int LOADER = 0;
     private final String[] COLUMNS = {
-            Index.TABLE_NAME + "." + Index._ID,
-            Index.COL_CHANGED,
-            Index.COL_CHANGED_PERCENT,
-            Index.COL_CLOSING,
-            Index.COL_CODE,
-            Index.COL_DATE,
-            Index.COL_HIGH,
-            Index.COL_LOW,
-            Index.COL_NAME,
-            Index.COL_OPENING,
-            Index.COL_PREVIOUS_DAY,
-            Index.COL_VALUE,
-            Index.COL_VOLUME
+            IndexCode.TABLE_NAME + "." + IndexCode._ID,
+            IndexCode.COL_CODE,
+            IndexCode.COL_NAME
     };
 
     public ListIndexFragment() {

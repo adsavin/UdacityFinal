@@ -2,6 +2,7 @@ package la.com.mavin.udacityfinal.task;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,7 +16,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.model.IndexCode;
+import la.com.mavin.udacityfinal.provider.IndexListProvider;
 
 /**
  * Created by adsavin on 30/03/15.
@@ -61,7 +64,7 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
             String jsonIndexList = stringBuilder.toString();
             JSONObject indices = new JSONObject(jsonIndexList);
             JSONArray indexList = indices.getJSONArray("indices");
-
+            UriMatcher matcher = buildUriMatcher();
             if(indexList.length() > 0) {
                 ContentValues[] values = new ContentValues[indexList.length()];
                 for (int i = 0; i < indexList.length(); i++) {
@@ -85,5 +88,14 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         }
 
         return null;
+    }
+
+    private static UriMatcher buildUriMatcher() {
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = Contract.CONTENT_AUTHORITY;
+        matcher.addURI(authority, IndexCode.PATH, IndexListProvider.INDEX_LIST);
+        matcher.addURI(authority, IndexCode.PATH + "/all", IndexListProvider.INDEX_LISTALL);
+        matcher.addURI(authority, IndexCode.PATH + "/#", IndexListProvider.INDEX_GETBYID);
+        return matcher;
     }
 }

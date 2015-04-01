@@ -23,13 +23,15 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + IndexCode.TABLE_NAME + " (" +
-                IndexCode.COL_CODE + " TEXT PRIMARY KEY, " +
+                IndexCode._ID + " INTEGER PRIMARY KEY, " +
+                IndexCode.COL_CODE + " TEXT NOT NULL, " +
                 IndexCode.COL_NAME + " TEXT NOT NULL" +
                 " );";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + StockCode.TABLE_NAME + " (" +
-                StockCode.COL_CODE + " TEXT PRIMARY KEY, " +
+                StockCode._ID + " INTEGER PRIMARY KEY, " +
+                StockCode.COL_CODE + " TEXT NOT NULL, " +
                 StockCode.COL_NAME + " TEXT NOT NULL" +
                 " );";
         db.execSQL(sql);
