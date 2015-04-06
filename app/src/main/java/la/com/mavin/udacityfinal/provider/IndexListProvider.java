@@ -37,7 +37,6 @@ public class IndexListProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
-        Log.d(LOG_TAG, "#########" + uri.toString());
         switch (URI_MATCHER.match(uri)) {
             case INDEX_LISTALL:
                 retCursor = dbHelper.getReadableDatabase().query(
@@ -61,6 +60,35 @@ public class IndexListProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
+            case INDEX_WITH_STARTDATE:
+                retCursor = dbHelper.getReadableDatabase().query(
+                        Index.TABLE_NAME,
+                        projection,
+                        Index.COL_CODE + " = ? AND " + Index.COL_DATE + " > ?",
+                        new String[]{
+                                getIndexCodeFromUri(uri),
+                                Long.toString(getDateFromUri(uri, 2))
+                        },
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case INDEX_WITH_START_ENDDATE:
+                retCursor = dbHelper.getReadableDatabase().query(
+                        Index.TABLE_NAME,
+                        projection,
+                        Index.COL_CODE + " = ? AND " + Index.COL_DATE + " > ? AND " + Index.COL_DATE + " < ?",
+                        new String[]{
+                                getIndexCodeFromUri(uri),
+                                Long.toString(getDateFromUri(uri, 2)),
+                                Long.toString(getDateFromUri(uri, 3))
+                        },
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
             default:
                     throw new UnsupportedOperationException("Unknown Uri: " + uri.toString());
 
@@ -75,6 +103,15 @@ public class IndexListProvider extends ContentProvider {
         switch (match) {
             case INDEX_LIST:
                 return IndexCode.CONTENT_TYPE;
+
+            case INDEX:
+                return Index.CONTENT_ITEM_TYPE;
+            case INDEX_WITH_CODE:
+                return Index.CONTENT_TYPE;
+            case INDEX_WITH_STARTDATE:
+                return Index.CONTENT_TYPE;
+            case INDEX_WITH_START_ENDDATE:
+                return Index.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -83,20 +120,35 @@ public class IndexListProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         Log.d(LOG_TAG, "Insert...");
-        if (URI_MATCHER.match(uri) == INDEX_LIST) {
-            long id = dbHelper.getWritableDatabase().insert(
-                    IndexCode.TABLE_NAME,
-                    null,
-                    values
-            );
-            Log.d(LOG_TAG, "ID=" +id);
-            if(id > 0) {
-                return IndexCode.getIndexUri(id);
-            } else {
+        long id;
+        switch (URI_MATCHER.match(uri)) {
+            case INDEX_LIST:
+                id = dbHelper.getWritableDatabase().insert(
+                        IndexCode.TABLE_NAME,
+                        null,
+                        values
+                );
+                if(id > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return IndexCode.getIndexUri(id);
+                } else {
+                    return null;
+                }
+            case INDEX:
+                id = dbHelper.getWritableDatabase().insert(
+                        Index.TABLE_NAME,
+                        null,
+                        values
+                );
+                if(id > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return Index.getIndexUri(id);
+                } else {
+                    return null;
+                }
+            default:
                 throw new android.database.SQLException("Failed to insert row into " + uri);
-            }
-        } else {
-            throw new UnsupportedOperationException("Unknown uri: " + uri);
+
         }
     }
 
@@ -114,25 +166,50 @@ public class IndexListProvider extends ContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = URI_MATCHER.match(uri);
+        Log.d(LOG_TAG, "DB is open" + db.isOpen());
         int count = 0;
-        if (match == INDEX_LIST) {
-            db.beginTransaction();
-            try {
-                for (ContentValues value : values) {
-                    long id = db.insert(IndexCode.TABLE_NAME, null, value);
-                    if (id != -1) {
-                        count++;
+        switch (match) {
+            case INDEX_LIST:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long id = db.insert(IndexCode.TABLE_NAME, null, value);
+                        if (id != -1) {
+                            count++;
+                        }
                     }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                    db.close();
                 }
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-                db.close();
-            }
-        } else {
-            throw new UnsupportedOperationException("Unknown Uri: " + uri);
+                break;
+            case INDEX:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        Cursor cursor = db.query(Index.TABLE_NAME, Index.COLUMNS, "date=?",new String[]{value.getAsString(Index.COL_DATE)},null,null,null);
+                        if(cursor.getCount() == 0) {
+                            long id = db.insert(Index.TABLE_NAME, null, value);
+                            if (id != -1) {
+                                count++;
+                            }
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                    db.close();
+                }
+                break;
+            default:
+                return super.bulkInsert(uri, values);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+
+        if(count > 0) {
+            Log.d(LOG_TAG, "count=" + count + ", notify");
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
         return count;
     }
 
@@ -142,10 +219,12 @@ public class IndexListProvider extends ContentProvider {
         matcher.addURI(authority, IndexCode.PATH, INDEX_LIST);
         matcher.addURI(authority, IndexCode.PATH + "/all", INDEX_LISTALL);
         matcher.addURI(authority, IndexCode.PATH + "/#", INDEX_GETBYID);
+
         matcher.addURI(authority, Index.PATH, INDEX);
         matcher.addURI(authority, Index.PATH + "/*", INDEX_WITH_CODE);
         matcher.addURI(authority, Index.PATH + "/#", INDEX_WITH_STARTDATE);
         matcher.addURI(authority, Index.PATH + "/#/#", INDEX_WITH_START_ENDDATE);
+
         return matcher;
     }
 

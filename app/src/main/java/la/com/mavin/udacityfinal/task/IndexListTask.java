@@ -3,7 +3,6 @@ package la.com.mavin.udacityfinal.task;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,10 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import la.com.mavin.udacityfinal.model.IndexCode;
 
@@ -35,31 +31,31 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         BufferedReader bufferedReader = null;
 
         try {
-            String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
-            Uri uri = Uri.parse(baseurl).buildUpon().build();
-//            Log.d(LOG_TAG, uri.toString());
-            URL url = new URL(uri.toString());
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.connect();
+//            String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
+//            Uri uri = Uri.parse(baseurl).buildUpon().build();
+//            URL url = new URL(uri.toString());
+//            httpURLConnection = (HttpURLConnection) url.openConnection();
+//            httpURLConnection.setRequestMethod("GET");
+//            httpURLConnection.connect();
+//
+//            InputStream inputStream = httpURLConnection.getInputStream();
+//            if(inputStream == null) {
+//                return null;
+//            }
+//
+//            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//            String line;
+//            StringBuilder stringBuilder = new StringBuilder();
+//            while ((line = bufferedReader.readLine()) != null) {
+//                stringBuilder.append(line);
+//            }
+//
+//            if(stringBuilder.length() == 0) {
+//                return null;
+//            }
 
-            InputStream inputStream = httpURLConnection.getInputStream();
-            if(inputStream == null) {
-                return null;
-            }
-
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-
-            if(stringBuilder.length() == 0) {
-                return null;
-            }
-
-            String jsonIndexList = stringBuilder.toString();
+//            String jsonIndexList = stringBuilder.toString();
+            String jsonIndexList = "{\"indices\":[{\"code\":\"001\",\"name\":\"LSX Composite\"},{\"code\":\"002\",\"name\":\"Nikei\"}]}";
             JSONObject indices = new JSONObject(jsonIndexList);
             JSONArray indexList = indices.getJSONArray("indices");
 

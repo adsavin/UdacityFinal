@@ -18,7 +18,7 @@ import android.widget.ListView;
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.model.Index;
-import la.com.mavin.udacityfinal.provider.IndexProvider;
+import la.com.mavin.udacityfinal.provider.IndexListProvider;
 import la.com.mavin.udacityfinal.task.IndexTask;
 
 /**
@@ -62,12 +62,10 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         if(bundle != null) {
             selectedUri = bundle.getParcelable("URI");
         }
-        Log.d(LOG_TAG, "Selected Uti: " + selectedUri.toString());
-        Log.d(LOG_TAG, "Code:"+IndexProvider.getIndexCodeFromUri(selectedUri));
-        new IndexTask(getActivity()).execute(IndexProvider.getIndexCodeFromUri(selectedUri));
+        new IndexTask(getActivity()).execute(IndexListProvider.getIndexCodeFromUri(selectedUri));
 
         View rootView = inflater.inflate(R.layout.fragment_index_daily, container, false);
-        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
+        this.listview_index = (ListView) rootView.findViewById(R.id.list_daily_index);
         this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
         this.listview_index.setAdapter(this.indexAdapter);
         this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -108,12 +106,11 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         if(args != null) {
             selectedUri = args.getParcelable("URI");
         }
-        Log.d(LOG_TAG, "----Selected: " + selectedUri.toString());
-        Log.d(LOG_TAG, "----Code:" + IndexProvider.getIndexCodeFromUri(selectedUri));
+        Log.d(LOG_TAG, "SEL:" + selectedUri.toString());
 
         return new CursorLoader(
                 getActivity(),
-                Index.getIndexUri("001"),
+                selectedUri,
                 COLUMNS,
                 null,
                 null,
