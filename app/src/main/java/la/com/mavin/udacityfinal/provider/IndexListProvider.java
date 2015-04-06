@@ -89,8 +89,8 @@ public class IndexListProvider extends ContentProvider {
                     null,
                     values
             );
-            Log.d(LOG_TAG, "ID=" +id);
-            if(id > 0) {
+            Log.d(LOG_TAG, "ID=" + id);
+            if (id > 0) {
                 return IndexCode.getIndexUri(id);
             } else {
                 throw new android.database.SQLException("Failed to insert row into " + uri);

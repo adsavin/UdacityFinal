@@ -23,15 +23,16 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + IndexCode.TABLE_NAME + " (" +
-                IndexCode._ID + " INTEGER PRIMARY KEY, " +
+                IndexCode._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 IndexCode.COL_CODE + " TEXT NOT NULL, " +
                 IndexCode.COL_NAME + " TEXT NOT NULL" +
+                " UNIQUE (" + IndexCode.COL_CODE + ") ON CONFLICT REPLACE" +
                 " );";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + StockCode.TABLE_NAME + " (" +
-                StockCode._ID + " INTEGER PRIMARY KEY, " +
-                StockCode.COL_CODE + " TEXT NOT NULL, " +
+                StockCode._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                StockCode.COL_CODE + " TEXT UNIQUE NOT NULL, " +
                 StockCode.COL_NAME + " TEXT NOT NULL" +
                 " );";
         db.execSQL(sql);
