@@ -63,7 +63,7 @@ public class Index extends BaseModel implements BaseColumns {
 
     public static Uri getIndexUri(String code) {
         return CONTENT_URI.buildUpon()
-                .appendQueryParameter("code", code)
+                .appendPath(code)
                 .build();
     }
 

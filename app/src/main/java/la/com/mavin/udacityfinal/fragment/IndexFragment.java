@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,23 +18,14 @@ import android.widget.ListView;
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.model.Index;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import la.com.mavin.udacityfinal.provider.IndexListProvider;
-=======
-import la.com.mavin.udacityfinal.model.IndexCode;
-import la.com.mavin.udacityfinal.provider.IndexProvider;
->>>>>>> origin/master
-=======
-import la.com.mavin.udacityfinal.provider.IndexProvider;
->>>>>>> parent of 45d23b2... ad night
 import la.com.mavin.udacityfinal.task.IndexTask;
 
 /**
  * Created by Adsavin on 3/30/2015.
  */
 public class IndexFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
+    private final String LOG_TAG = getClass().getSimpleName();
     private IndexAdapter indexAdapter;
     private ListView listview_index;
     private int position = ListView.INVALID_POSITION;
@@ -70,26 +62,10 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         if(bundle != null) {
             selectedUri = bundle.getParcelable("URI");
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
         new IndexTask(getActivity()).execute(IndexListProvider.getIndexCodeFromUri(selectedUri));
 
         View rootView = inflater.inflate(R.layout.fragment_index_daily, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.list_daily_index);
-=======
-        new IndexTask(getActivity()).execute(IndexProvider.getIndexCodeFromUri(selectedUri));
-
-        View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
-        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
->>>>>>> origin/master
-=======
-        Log.d(LOG_TAG, "Selected Uti: " + selectedUri.toString());
-        Log.d(LOG_TAG, "Code:"+IndexProvider.getIndexCodeFromUri(selectedUri));
-        new IndexTask(getActivity()).execute(IndexProvider.getIndexCodeFromUri(selectedUri));
-
-        View rootView = inflater.inflate(R.layout.fragment_index_daily, container, false);
-        this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
->>>>>>> parent of 45d23b2... ad night
         this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
         this.listview_index.setAdapter(this.indexAdapter);
         this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -127,25 +103,14 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-<<<<<<< HEAD
         if(args != null) {
             selectedUri = args.getParcelable("URI");
         }
-        Log.d(LOG_TAG, "----Selected: " + selectedUri.toString());
-        Log.d(LOG_TAG, "----Code:" + IndexProvider.getIndexCodeFromUri(selectedUri));
+        Log.d(LOG_TAG, "SEL:" + selectedUri.toString());
 
         return new CursorLoader(
                 getActivity(),
-<<<<<<< HEAD
                 selectedUri,
-=======
-        return new CursorLoader(
-                getActivity(),
-                IndexCode.getIndexListUri(),
->>>>>>> origin/master
-=======
-                Index.getIndexUri("001"),
->>>>>>> parent of 45d23b2... ad night
                 COLUMNS,
                 null,
                 null,

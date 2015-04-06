@@ -11,6 +11,7 @@ import la.com.mavin.udacityfinal.fragment.ListIndexFragment;
 
 
 public class IndexListActivity extends ActionBarActivity implements ListIndexFragment.Callback {
+    private final String LOG_TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class IndexListActivity extends ActionBarActivity implements ListIndexFra
 
     @Override
     public void onItemSelected(Uri uri) {
+//        Log.d(LOG_TAG, uri.toString());
         Intent intent = new Intent(getApplicationContext(), IndexDailyActivity.class);
         intent.setData(uri);
         startActivity(intent);
