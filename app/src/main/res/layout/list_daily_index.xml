@@ -56,6 +56,7 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/img_high"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView
@@ -65,6 +66,7 @@
             android:layout_height="match_parent" />
         <ImageView
             android:id="@+id/img_low"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         </LinearLayout>
