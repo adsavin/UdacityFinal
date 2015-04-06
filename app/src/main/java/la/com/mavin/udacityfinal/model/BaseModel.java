@@ -33,7 +33,7 @@ public class BaseModel implements BaseColumns {
     public static final int VALUE = 11;
     public static final int VOLUME = 12;
 
-    public static final String CREATED_COLUMN = _ID + " INTEGER PRIMARY KEY," +
+    public static final String CREATED_COLUMN =
             COL_CHANGED + " REAL NOT NULL, " +
             COL_CHANGED_PERCENT + " REAL NOT NULL, " +
             COL_CLOSING + " REAL NOT NULL, " +

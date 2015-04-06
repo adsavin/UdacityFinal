@@ -50,8 +50,8 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         new IndexListTask(getActivity()).execute();
-
         this.indexListAdapter = new IndexListAdapter(getActivity(), null, 0);
+
         View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
         this.listview_index.setAdapter(this.indexListAdapter);
@@ -60,7 +60,7 @@ public class ListIndexFragment extends Fragment  implements LoaderManager.Loader
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
                 if(cursor != null) {
-                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
+                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(IndexCode.CODE)));
                 }
                 position = i;
             }

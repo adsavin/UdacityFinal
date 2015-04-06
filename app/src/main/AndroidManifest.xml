@@ -34,14 +34,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="la.com.mavin.udacityfinal.MainActivity" />
         </activity>
-
-        <provider
-            android:name=".provider.IndexListProvider"
-            android:authorities="la.com.mavin.udacityfinal" />
-        <provider
-            android:authorities="la.com.mavin.udacityfinal"
-            android:name=".provider.IndexProvider" />
-
         <activity
             android:name=".IndexDailyActivity"
             android:label="@string/title_activity_index_daily"
@@ -58,6 +50,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="la.com.mavin.udacityfinal.IndexDailyActivity" />
         </activity>
+
+        <provider
+            android:authorities="la.com.mavin.udacityfinal"
+            android:name=".provider.IndexListProvider" />
+
     </application>
 
 </manifest>

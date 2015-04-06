@@ -2,7 +2,6 @@ package la.com.mavin.udacityfinal.task;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,9 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.model.IndexCode;
-import la.com.mavin.udacityfinal.provider.IndexListProvider;
 
 /**
  * Created by adsavin on 30/03/15.
@@ -40,7 +37,7 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         try {
             String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
             Uri uri = Uri.parse(baseurl).buildUpon().build();
-            Log.d(LOG_TAG, uri.toString());
+//            Log.d(LOG_TAG, uri.toString());
             URL url = new URL(uri.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -105,12 +102,4 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private static UriMatcher buildUriMatcher() {
-        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = Contract.CONTENT_AUTHORITY;
-        matcher.addURI(authority, IndexCode.PATH, IndexListProvider.INDEX_LIST);
-        matcher.addURI(authority, IndexCode.PATH + "/all", IndexListProvider.INDEX_LISTALL);
-        matcher.addURI(authority, IndexCode.PATH + "/#", IndexListProvider.INDEX_GETBYID);
-        return matcher;
-    }
 }

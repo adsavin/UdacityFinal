@@ -20,10 +20,10 @@ public class IndexProvider extends ContentProvider {
 
     private DbHelper dbHelper;
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
-    private static final int INDEX = 100;
-    private static final int INDEX_WITH_CODE = 101;
-    private static final int INDEX_WITH_STARTDATE = 102;
-    private static final int INDEX_WITH_START_ENDDATE = 103;
+    private static final int INDEX = 10;
+    private static final int INDEX_WITH_CODE = 11;
+    private static final int INDEX_WITH_STARTDATE = 12;
+    private static final int INDEX_WITH_START_ENDDATE = 13;
 
 
     @Override
@@ -35,7 +35,7 @@ public class IndexProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor = null;
-        Log.d(LOG_TAG, uri.toString());
+        Log.d(LOG_TAG, "Matched: " + uri.toString() + " - " + URI_MATCHER.match(uri));
         switch (URI_MATCHER.match(uri)) {
             case INDEX_WITH_CODE: // /*
                 retCursor = dbHelper.getReadableDatabase().query(
@@ -138,7 +138,6 @@ public class IndexProvider extends ContentProvider {
                 db.endTransaction();
                 db.close();
             }
-
         } else {
             throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
@@ -165,6 +164,8 @@ public class IndexProvider extends ContentProvider {
         final String authority = Contract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, Index.PATH, INDEX);
+        matcher.addURI(authority, Index.PATH + "/*", INDEX_WITH_CODE);
+        Log.d("IndexProvider", "Matcher: " + authority + Index.PATH + "-" + INDEX_WITH_CODE);
         matcher.addURI(authority, Index.PATH + "/*/#/", INDEX_WITH_STARTDATE);
         matcher.addURI(authority, Index.PATH + "/*/#/#", INDEX_WITH_START_ENDDATE);
 
@@ -172,7 +173,8 @@ public class IndexProvider extends ContentProvider {
     }
 
     public static String getIndexCodeFromUri(Uri uri) {
-        return uri.getPathSegments().get(1);
+//        return uri.getPathSegments().get(1).toString();
+        return "001";
     }
 
     public static long getDateFromUri(Uri uri, int i) {
