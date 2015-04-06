@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import la.com.mavin.udacityfinal.R;
-import la.com.mavin.udacityfinal.model.Index;
 
 /**
  * Created by adsavin on 30/03/15.
@@ -65,11 +64,15 @@ public class IndexAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         Index model = Index.toObject(cursor);
         ((TextView) view.findViewById(R.id.index_date)).setText(model.getDate());
 =======
 
 >>>>>>> origin/master
+=======
+        ((TextView) view.findViewById(R.id.item_daily_index)).setText(cursor.getString(0));
+>>>>>>> parent of 45d23b2... ad night
     }
 
     @Override

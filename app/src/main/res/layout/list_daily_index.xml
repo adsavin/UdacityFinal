@@ -3,57 +3,19 @@
     android:layout_width="match_parent"
 <<<<<<< HEAD
     android:orientation="horizontal"
-
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_weight="1"
-        android:orientation="vertical"
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/item_daily_index"-->
+        <!--android:height="50dp"-->
+        <!--android:text="2015-04-04"-->
+        <!--android:layout_height="wrap_content" />-->
+    <TextView
+        android:id="@+id/item_daily_index"
+        android:text="2015-04-05"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/index_date"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/volume"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/value"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        </LinearLayout>
-    <LinearLayout
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/index_high"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/index_closing"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/index_low"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
-        </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/img_high"
@@ -95,4 +57,11 @@
 
         </ListView>
 >>>>>>> origin/master
+=======
+        android:height="100dp"
+        android:textSize="26dp"
+        android:gravity="center_vertical"
+        android:padding="20dp"
+        android:layout_height="wrap_content" />
+>>>>>>> parent of 45d23b2... ad night
 </LinearLayout>

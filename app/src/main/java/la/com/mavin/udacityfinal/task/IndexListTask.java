@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,7 +12,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.model.IndexCode;
@@ -34,6 +38,7 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         BufferedReader bufferedReader = null;
 
         try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 //            String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
 //            Uri uri = Uri.parse(baseurl).buildUpon().build();
@@ -64,6 +69,11 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
             String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
             Uri uri = Uri.parse(baseurl).buildUpon().build();
             Log.d(LOG_TAG, uri.toString());
+=======
+            String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
+            Uri uri = Uri.parse(baseurl).buildUpon().build();
+//            Log.d(LOG_TAG, uri.toString());
+>>>>>>> parent of 45d23b2... ad night
             URL url = new URL(uri.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -86,7 +96,10 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
             }
 
             String jsonIndexList = stringBuilder.toString();
+<<<<<<< HEAD
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 45d23b2... ad night
             JSONObject indices = new JSONObject(jsonIndexList);
             JSONArray indexList = indices.getJSONArray("indices");
 

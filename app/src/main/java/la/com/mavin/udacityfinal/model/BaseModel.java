@@ -38,12 +38,12 @@ public class BaseModel implements BaseColumns {
             COL_CHANGED_PERCENT + " REAL NOT NULL, " +
             COL_CLOSING + " REAL NOT NULL, " +
             COL_CODE + " TEXT NOT NULL, " +
-            COL_DATE + " TEXT, " +
+            COL_DATE + " REAL NOT NULL, " +
             COL_HIGH + " REAL NOT NULL, " +
             COL_LOW + " REAL NOT NULL, " +
-            COL_NAME + " TEXT, " +
+            COL_NAME + " TEXT NOT NULL, " +
             COL_OPENING + " REAL NOT NULL, " +
-            COL_PREVIOUS_DAY + " REAL, " +
+            COL_PREVIOUS_DAY + " REAL NOT NULL, " +
             COL_VALUE + " REAL NOT NULL, " +
             COL_VOLUME + " REAL NOT NULL";
 

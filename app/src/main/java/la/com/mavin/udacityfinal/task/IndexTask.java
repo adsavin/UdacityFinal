@@ -3,10 +3,14 @@ package la.com.mavin.udacityfinal.task;
 import android.content.ContentValues;
 import android.content.Context;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import android.content.UriMatcher;
 import android.net.Uri;
 >>>>>>> origin/master
+=======
+import android.net.Uri;
+>>>>>>> parent of 45d23b2... ad night
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,7 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.model.Index;
@@ -46,6 +53,7 @@ public class IndexTask extends AsyncTask<String, Void, Void> {
         BufferedReader bufferedReader = null;
 
         try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 //            String baseurl = "http://stocx.webatu.com/index.php?r=site/showIndex";
 //            Uri uri = Uri.parse(baseurl).buildUpon().appendQueryParameter("code", code).build();
@@ -84,6 +92,11 @@ public class IndexTask extends AsyncTask<String, Void, Void> {
 =======
             String baseurl = "http://stocx.webatu.com/index.php?r=site/showIndex";
             Uri uri = Uri.parse(baseurl).buildUpon().appendQueryParameter("code", code).build();
+=======
+            String baseurl = "http://stocx.webatu.com/index.php?r=site/showIndex";
+            Uri uri = Uri.parse(baseurl).buildUpon().appendQueryParameter("code", code).build();
+
+>>>>>>> parent of 45d23b2... ad night
             if(startDate != "") {
                 uri = uri.buildUpon().appendQueryParameter("startDate", startDate).build();
                 if(endDate != "" ) {
@@ -91,7 +104,11 @@ public class IndexTask extends AsyncTask<String, Void, Void> {
                 }
             }
 
+<<<<<<< HEAD
             Log.d(LOG_TAG, uri.toString());
+=======
+            Log.d(LOG_TAG, "xxxxx----" + uri.toString());
+>>>>>>> parent of 45d23b2... ad night
 
             URL url = new URL(uri.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -115,30 +132,43 @@ public class IndexTask extends AsyncTask<String, Void, Void> {
             }
 
             String jsonIndex = stringBuilder.toString();
+<<<<<<< HEAD
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 45d23b2... ad night
             Log.d(LOG_TAG, "JsonString=" + jsonIndex);
             JSONArray dailyIndex = new JSONArray(jsonIndex);
+//            JSONArray indexList = indices.getJSONArray("indices");
 
+//            if(cursor.getCount() < indexList.length()) {
             if(dailyIndex.length() > 0) {
                 ContentValues[] values = new ContentValues[dailyIndex.length()];
                 for (int i = 0; i < dailyIndex.length(); i++) {
                     JSONObject o = dailyIndex.getJSONObject(i);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> origin/master
+=======
+                    Log.d(LOG_TAG, Long.toString(o.getLong(Index.COL_DATE)));
+>>>>>>> parent of 45d23b2... ad night
                     ContentValues value = new ContentValues();
                     value.put(Index.COL_CHANGED, o.getLong(Index.COL_CHANGED));
                     value.put(Index.COL_CHANGED_PERCENT, o.getLong(Index.COL_CHANGED_PERCENT));
                     value.put(Index.COL_CLOSING, o.getLong(Index.COL_CLOSING));
 <<<<<<< HEAD
                     value.put(Index.COL_CODE, code);
+<<<<<<< HEAD
                     value.put(Index.COL_DATE, o.getString(Index.COL_DATE));
                     Log.d(LOG_TAG, value.getAsString(Index.COL_DATE));
 =======
                     value.put(Index.COL_CODE, o.getString(Index.COL_CODE));
                     value.put(Index.COL_DATE, o.getLong(Index.COL_DATE));
 >>>>>>> origin/master
+=======
+                    value.put(Index.COL_DATE, o.getLong(Index.COL_DATE));
+>>>>>>> parent of 45d23b2... ad night
                     value.put(Index.COL_HIGH, o.getLong(Index.COL_HIGH));
                     value.put(Index.COL_LOW, o.getLong(Index.COL_LOW));
                     value.put(Index.COL_NAME, o.getString(Index.COL_NAME));
@@ -150,13 +180,18 @@ public class IndexTask extends AsyncTask<String, Void, Void> {
                     values[i] = value;
                 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> origin/master
+=======
+                Log.d(LOG_TAG, Index.getIndexUri().toString());
+>>>>>>> parent of 45d23b2... ad night
                 int rows = 0;
                 if (values.length > 0) {
                     rows = context.getContentResolver().bulkInsert(Index.getIndexUri(), values);
                 }
+
                 Log.d(LOG_TAG, "Inserted " + rows + " row(s).");
             }
         } catch (Exception ex) {

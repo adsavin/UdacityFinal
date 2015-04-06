@@ -14,10 +14,14 @@ import la.com.mavin.udacityfinal.model.StockCode;
  */
 public class DbHelper extends SQLiteOpenHelper {
 <<<<<<< HEAD
+<<<<<<< HEAD
     private static final int DATABASE_VERSION = 8;
 =======
     private static final int DATABASE_VERSION = 2;
 >>>>>>> origin/master
+=======
+    private static final int DATABASE_VERSION = 3;
+>>>>>>> parent of 45d23b2... ad night
     static final String DATABASE_NAME = "stocx.db";
 
     public DbHelper(Context context) {
@@ -43,16 +47,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE " + Index.TABLE_NAME + " (" +
                 Index.CREATED_COLUMN +
-                ", UNIQUE (" + Index.COL_DATE + ") ON CONFLICT IGNORE " +
-                ");";
+                " );";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + Stock.TABLE_NAME + " (" +
                 Stock.CREATED_COLUMN + ", " +
                 Stock.COL_MARKET_CAP + " REAL NOT NULL, " +
                 Stock.COL_LISTED_SHARES + " REAL NOT NULL" +
-                ", UNIQUE (" + Stock.COL_DATE + ") ON CONFLICT IGNORE " +
-                ");";
+                " );";
         db.execSQL(sql);
     }
 
