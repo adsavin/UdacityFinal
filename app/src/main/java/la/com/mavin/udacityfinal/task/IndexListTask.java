@@ -2,6 +2,7 @@ package la.com.mavin.udacityfinal.task;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,7 +13,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.net.HttpURLConnection;
 
+import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.model.IndexCode;
+import la.com.mavin.udacityfinal.provider.IndexListProvider;
 
 /**
  * Created by adsavin on 30/03/15.
@@ -31,6 +34,7 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         BufferedReader bufferedReader = null;
 
         try {
+<<<<<<< HEAD
 //            String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
 //            Uri uri = Uri.parse(baseurl).buildUpon().build();
 //            URL url = new URL(uri.toString());
@@ -56,6 +60,33 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
 
 //            String jsonIndexList = stringBuilder.toString();
             String jsonIndexList = "{\"indices\":[{\"code\":\"001\",\"name\":\"LSX Composite\"},{\"code\":\"002\",\"name\":\"Nikei\"}]}";
+=======
+            String baseurl = "http://stocx.webatu.com/index.php?r=site/listIndex";
+            Uri uri = Uri.parse(baseurl).buildUpon().build();
+            Log.d(LOG_TAG, uri.toString());
+            URL url = new URL(uri.toString());
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.connect();
+
+            InputStream inputStream = httpURLConnection.getInputStream();
+            if(inputStream == null) {
+                return null;
+            }
+
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+
+            if(stringBuilder.length() == 0) {
+                return null;
+            }
+
+            String jsonIndexList = stringBuilder.toString();
+>>>>>>> origin/master
             JSONObject indices = new JSONObject(jsonIndexList);
             JSONArray indexList = indices.getJSONArray("indices");
 
@@ -98,4 +129,12 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    private static UriMatcher buildUriMatcher() {
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = Contract.CONTENT_AUTHORITY;
+        matcher.addURI(authority, IndexCode.PATH, IndexListProvider.INDEX_LIST);
+        matcher.addURI(authority, IndexCode.PATH + "/all", IndexListProvider.INDEX_LISTALL);
+        matcher.addURI(authority, IndexCode.PATH + "/#", IndexListProvider.INDEX_GETBYID);
+        return matcher;
+    }
 }

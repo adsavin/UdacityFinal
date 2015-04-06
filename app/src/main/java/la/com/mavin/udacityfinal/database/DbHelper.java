@@ -13,7 +13,11 @@ import la.com.mavin.udacityfinal.model.StockCode;
  * Created by Adsavin on 3/30/2015.
  */
 public class DbHelper extends SQLiteOpenHelper {
+<<<<<<< HEAD
     private static final int DATABASE_VERSION = 8;
+=======
+    private static final int DATABASE_VERSION = 2;
+>>>>>>> origin/master
     static final String DATABASE_NAME = "stocx.db";
 
     public DbHelper(Context context) {
@@ -23,28 +27,27 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + IndexCode.TABLE_NAME + " (" +
-                IndexCode._ID + " INTEGER PRIMARY KEY, " +
+                IndexCode._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 IndexCode.COL_CODE + " TEXT NOT NULL, " +
                 IndexCode.COL_NAME + " TEXT NOT NULL" +
+                " UNIQUE (" + IndexCode.COL_CODE + ") ON CONFLICT REPLACE" +
                 " );";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + StockCode.TABLE_NAME + " (" +
-                StockCode._ID + " INTEGER PRIMARY KEY, " +
-                StockCode.COL_CODE + " TEXT NOT NULL, " +
+                StockCode._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                StockCode.COL_CODE + " TEXT UNIQUE NOT NULL, " +
                 StockCode.COL_NAME + " TEXT NOT NULL" +
                 " );";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + Index.TABLE_NAME + " (" +
-                Index._ID + " INTEGER PRIMARY KEY," +
                 Index.CREATED_COLUMN +
                 ", UNIQUE (" + Index.COL_DATE + ") ON CONFLICT IGNORE " +
                 ");";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + Stock.TABLE_NAME + " (" +
-                Stock._ID + " INTEGER PRIMARY KEY," +
                 Stock.CREATED_COLUMN + ", " +
                 Stock.COL_MARKET_CAP + " REAL NOT NULL, " +
                 Stock.COL_LISTED_SHARES + " REAL NOT NULL" +
@@ -55,8 +58,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + IndexCode.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + StockCode.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Index.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Stock.TABLE_NAME);
         onCreate(db);
