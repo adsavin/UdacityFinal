@@ -13,7 +13,7 @@ import la.com.mavin.udacityfinal.model.StockCode;
  * Created by Adsavin on 3/30/2015.
  */
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "stocx.db";
 
     public DbHelper(Context context) {
@@ -38,13 +38,11 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + Index.TABLE_NAME + " (" +
-                Index._ID + " INTEGER PRIMARY KEY," +
                 Index.CREATED_COLUMN +
                 " );";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + Stock.TABLE_NAME + " (" +
-                Stock._ID + " INTEGER PRIMARY KEY," +
                 Stock.CREATED_COLUMN + ", " +
                 Stock.COL_MARKET_CAP + " REAL NOT NULL, " +
                 Stock.COL_LISTED_SHARES + " REAL NOT NULL" +
@@ -54,8 +52,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + IndexCode.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + StockCode.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Index.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Stock.TABLE_NAME);
         onCreate(db);

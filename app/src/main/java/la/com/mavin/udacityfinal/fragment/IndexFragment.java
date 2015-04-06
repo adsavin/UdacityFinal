@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import android.widget.ListView;
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.model.Index;
+import la.com.mavin.udacityfinal.model.IndexCode;
 import la.com.mavin.udacityfinal.provider.IndexProvider;
 import la.com.mavin.udacityfinal.task.IndexTask;
 
@@ -25,7 +25,7 @@ import la.com.mavin.udacityfinal.task.IndexTask;
  * Created by Adsavin on 3/30/2015.
  */
 public class IndexFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private final String LOG_TAG = getClass().getSimpleName();
+
     private IndexAdapter indexAdapter;
     private ListView listview_index;
     private int position = ListView.INVALID_POSITION;
@@ -62,11 +62,9 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         if(bundle != null) {
             selectedUri = bundle.getParcelable("URI");
         }
-        Log.d(LOG_TAG, "Selected Uti: " + selectedUri.toString());
-        Log.d(LOG_TAG, "Code:"+IndexProvider.getIndexCodeFromUri(selectedUri));
         new IndexTask(getActivity()).execute(IndexProvider.getIndexCodeFromUri(selectedUri));
 
-        View rootView = inflater.inflate(R.layout.fragment_index_daily, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_index_list, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.listview_index);
         this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
         this.listview_index.setAdapter(this.indexAdapter);
@@ -105,15 +103,9 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if(args != null) {
-            selectedUri = args.getParcelable("URI");
-        }
-        Log.d(LOG_TAG, "----Selected: " + selectedUri.toString());
-        Log.d(LOG_TAG, "----Code:" + IndexProvider.getIndexCodeFromUri(selectedUri));
-
         return new CursorLoader(
                 getActivity(),
-                Index.getIndexUri("001"),
+                IndexCode.getIndexListUri(),
                 COLUMNS,
                 null,
                 null,

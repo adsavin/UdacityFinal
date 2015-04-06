@@ -10,7 +10,6 @@ import android.util.Log;
 
 import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.database.DbHelper;
-import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
 
 /**
@@ -19,13 +18,9 @@ import la.com.mavin.udacityfinal.model.IndexCode;
 public class IndexListProvider extends ContentProvider {
     private final String LOG_TAG = getClass().getSimpleName();
     private DbHelper dbHelper;
-    private static final int INDEX = 10;
-    private static final int INDEX_WITH_CODE = 11;
-    private static final int INDEX_WITH_STARTDATE = 12;
-    private static final int INDEX_WITH_START_ENDDATE = 13;
-    public static final int INDEX_LIST = 20;
-    public static final int INDEX_GETBYID = 21;
-    public static final int INDEX_LISTALL = 22;
+    public static final int INDEX_LIST = 101;
+    public static final int INDEX_GETBYID = 111;
+    public static final int INDEX_LISTALL = 121;
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
 
     @Override
@@ -37,33 +32,19 @@ public class IndexListProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
-        Log.d(LOG_TAG, "#########" + uri.toString());
-        switch (URI_MATCHER.match(uri)) {
-            case INDEX_LISTALL:
-                retCursor = dbHelper.getReadableDatabase().query(
-                        IndexCode.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            case INDEX_WITH_CODE:
-                retCursor = dbHelper.getReadableDatabase().query(
-                        Index.TABLE_NAME,
-                        projection,
-                        Index.COL_CODE + "=?",
-                        new String[] {getIndexCodeFromUri(uri)},
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            default:
-                    throw new UnsupportedOperationException("Unknown Uri: " + uri.toString());
-
+        Log.d(LOG_TAG, uri.toString());
+        if (URI_MATCHER.match(uri) == INDEX_LISTALL) {
+            retCursor = dbHelper.getReadableDatabase().query(
+                    IndexCode.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder
+            );
+        } else {
+            throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         return retCursor;
@@ -117,6 +98,7 @@ public class IndexListProvider extends ContentProvider {
         int count = 0;
         if (match == INDEX_LIST) {
             db.beginTransaction();
+
             try {
                 for (ContentValues value : values) {
                     long id = db.insert(IndexCode.TABLE_NAME, null, value);
@@ -132,7 +114,11 @@ public class IndexListProvider extends ContentProvider {
         } else {
             throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+
+        if (count > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
         return count;
     }
 
@@ -142,19 +128,7 @@ public class IndexListProvider extends ContentProvider {
         matcher.addURI(authority, IndexCode.PATH, INDEX_LIST);
         matcher.addURI(authority, IndexCode.PATH + "/all", INDEX_LISTALL);
         matcher.addURI(authority, IndexCode.PATH + "/#", INDEX_GETBYID);
-        matcher.addURI(authority, Index.PATH, INDEX);
-        matcher.addURI(authority, Index.PATH + "/*", INDEX_WITH_CODE);
-        matcher.addURI(authority, Index.PATH + "/#", INDEX_WITH_STARTDATE);
-        matcher.addURI(authority, Index.PATH + "/#/#", INDEX_WITH_START_ENDDATE);
         return matcher;
     }
 
-    public static String getIndexCodeFromUri(Uri uri) {
-//        return uri.getPathSegments().get(1).toString();
-        return "001";
-    }
-
-    public static long getDateFromUri(Uri uri, int i) {
-        return Long.parseLong(uri.getPathSegments().get(i));
-    }
 }
