@@ -18,7 +18,7 @@ import android.widget.ListView;
 import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.model.Index;
-import la.com.mavin.udacityfinal.provider.IndexListProvider;
+import la.com.mavin.udacityfinal.provider.StocxProvider;
 import la.com.mavin.udacityfinal.task.IndexTask;
 
 /**
@@ -62,7 +62,7 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         if(bundle != null) {
             selectedUri = bundle.getParcelable("URI");
         }
-        new IndexTask(getActivity()).execute(IndexListProvider.getIndexCodeFromUri(selectedUri));
+        new IndexTask(getActivity()).execute(StocxProvider.getIndexCodeFromUri(selectedUri));
 
         View rootView = inflater.inflate(R.layout.fragment_index_daily, container, false);
         this.listview_index = (ListView) rootView.findViewById(R.id.list_daily_index);

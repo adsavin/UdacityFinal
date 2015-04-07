@@ -53,7 +53,7 @@
 
         <provider
             android:authorities="la.com.mavin.udacityfinal"
-            android:name=".provider.IndexListProvider" />
+            android:name=".provider.StocxProvider" />
 
     </application>
 
