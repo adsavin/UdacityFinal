@@ -37,7 +37,10 @@ public class StocxProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
-        switch (URI_MATCHER.match(uri)) {
+        int match = URI_MATCHER.match(uri);
+        String indexcode = getIndexCodeFromUri(uri);
+        Log.d(LOG_TAG, "match:" + match + ", codefromuri=" + indexcode);
+        switch (match) {
             case INDEX_LISTALL:
                 retCursor = dbHelper.getReadableDatabase().query(
                         IndexCode.TABLE_NAME,
@@ -50,6 +53,7 @@ public class StocxProvider extends ContentProvider {
                 );
                 break;
             case INDEX_WITH_CODE:
+                Log.d(LOG_TAG, "IndexWithCode:" + indexcode);
                 retCursor = dbHelper.getReadableDatabase().query(
                         Index.TABLE_NAME,
                         projection,
@@ -66,7 +70,7 @@ public class StocxProvider extends ContentProvider {
                         projection,
                         Index.COL_CODE + " = ? AND " + Index.COL_DATE + " > ?",
                         new String[]{
-                                getIndexCodeFromUri(uri),
+                                indexcode,
                                 Long.toString(getDateFromUri(uri, 2))
                         },
                         null,
@@ -80,7 +84,7 @@ public class StocxProvider extends ContentProvider {
                         projection,
                         Index.COL_CODE + " = ? AND " + Index.COL_DATE + " > ? AND " + Index.COL_DATE + " < ?",
                         new String[]{
-                                getIndexCodeFromUri(uri),
+                                indexcode,
                                 Long.toString(getDateFromUri(uri, 2)),
                                 Long.toString(getDateFromUri(uri, 3))
                         },
@@ -229,8 +233,9 @@ public class StocxProvider extends ContentProvider {
     }
 
     public static String getIndexCodeFromUri(Uri uri) {
-//        return uri.getPathSegments().get(1).toString();
-        return "001";
+        Log.d("Provider", "Uri:"+uri.toString());
+        Log.d("Provider", "code"+uri.getPathSegments().get(1).toString());
+        return uri.getPathSegments().get(1).toString();
     }
 
     public static long getDateFromUri(Uri uri, int i) {

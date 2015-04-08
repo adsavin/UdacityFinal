@@ -37,18 +37,18 @@ public class Index extends BaseModel implements BaseColumns {
 
     public static Index toObject(Cursor cursor) {
         Index model = new Index();
-        model.setChanged(cursor.getLong(CHANGED));
-        model.setChangedPercent(cursor.getLong(CHANGED_PERCENT));
-        model.setClosing(cursor.getLong(CLOSING));
+        model.setChanged(cursor.getString(CHANGED));
+        model.setChangedPercent(cursor.getString(CHANGED_PERCENT));
+        model.setClosing(cursor.getString(CLOSING));
         model.setCode(cursor.getString(CODE));
-        model.setDate(cursor.getString(DATE));
-        model.setHigh(cursor.getLong(HIGH));
-        model.setLow(cursor.getLong(LOW));
+        model.setDate(cursor.getLong(DATE));
+        model.setHigh(cursor.getString(HIGH));
+        model.setLow(cursor.getString(LOW));
         model.setName(cursor.getString(NAME));
-        model.setOpening(cursor.getLong(OPENING));
-        model.setPreviousDay(cursor.getLong(PREVIOUS_DAY));
-        model.setValue(cursor.getLong(VALUE));
-        model.setVolume(cursor.getLong(VOLUME));
+        model.setOpening(cursor.getString(OPENING));
+        model.setPreviousDay(cursor.getString(PREVIOUS_DAY));
+        model.setValue(cursor.getString(VALUE));
+        model.setVolume(cursor.getString(VOLUME));
 
         return model;
     }

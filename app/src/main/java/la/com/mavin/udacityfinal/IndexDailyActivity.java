@@ -3,14 +3,22 @@ package la.com.mavin.udacityfinal;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import la.com.mavin.udacityfinal.fragment.DatePickerFragment;
 import la.com.mavin.udacityfinal.fragment.IndexFragment;
 
 
 public class IndexDailyActivity extends ActionBarActivity implements IndexFragment.Callback {
+    private String LOG_TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +61,21 @@ public class IndexDailyActivity extends ActionBarActivity implements IndexFragme
 
     @Override
     public void onItemSelected(Uri uri) {
+        Log.d(LOG_TAG, "itemurl=" + uri.toString());
         Intent intent = new Intent(getApplicationContext(), IndexDetailActivity.class);
         intent.setData(uri);
         startActivity(intent);
+    }
+
+    public void showStartDatePickerDialog(View v) {
+        DatePickerFragment f = new DatePickerFragment();
+        f.setTxt((TextView) findViewById(R.id.txt_startdate));
+        f.show(getSupportFragmentManager(), "dtStartDate");
+    }
+
+    public void showEndDatePickerDialog(View v) {
+        DatePickerFragment f = new DatePickerFragment();
+        f.setTxt((TextView) findViewById(R.id.txt_enddate));
+        f.show(getSupportFragmentManager(), "dtEndDate");
     }
 }

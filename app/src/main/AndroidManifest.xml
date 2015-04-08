@@ -54,7 +54,6 @@
         <provider
             android:authorities="la.com.mavin.udacityfinal"
             android:name=".provider.StocxProvider" />
-
     </application>
 
 </manifest>

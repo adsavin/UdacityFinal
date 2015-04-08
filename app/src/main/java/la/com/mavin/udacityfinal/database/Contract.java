@@ -7,10 +7,5 @@ import android.net.Uri;
  */
 public class Contract {
     public static final String CONTENT_AUTHORITY = "la.com.mavin.udacityfinal";
-
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-
-
-    public static final String PATH_STOCK = "stock";
-    public static final String PATH_STOCK_LIST = "stocklist";
 }

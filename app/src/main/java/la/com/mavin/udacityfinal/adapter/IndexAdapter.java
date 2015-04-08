@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import la.com.mavin.udacityfinal.R;
+import la.com.mavin.udacityfinal.helper.MyHelper;
 import la.com.mavin.udacityfinal.model.Index;
 
 /**
@@ -22,31 +25,17 @@ public class IndexAdapter extends CursorAdapter {
     private final int INDEX_CURRENT = 0;
     private final int INDEX_HISTORY = 1;
 
+    public ImageView imgUp;
+    public ImageView imgDown;
+    public TextView txtDate;
+    public TextView txtHigh;
+    public TextView txtLow;
+    public TextView txtClosed;
+    public TextView txtChanged;
 
     public IndexAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
-
-    public static class ViewHolder {
-        public final ImageView imgUp;
-        public final ImageView imgDown;
-        public final TextView txtDate;
-        public final TextView txtVolume;
-        public final TextView txtValue;
-        public final TextView txtHigh;
-        public final TextView txtLow;
-
-        public ViewHolder(View view) {
-            imgUp = (ImageView) view.findViewById(R.id.img_high);
-            imgDown = (ImageView) view.findViewById(R.id.img_low);
-            txtDate = (TextView) view.findViewById(R.id.index_date);
-            txtVolume = (TextView) view.findViewById(R.id.volume);
-            txtValue = (TextView) view.findViewById(R.id.value);
-            txtHigh = (TextView) view.findViewById(R.id.index_high);
-            txtLow = (TextView) view.findViewById(R.id.index_low);
-        }
-    }
-
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -69,32 +58,39 @@ public class IndexAdapter extends CursorAdapter {
 
 //        return view;
         View view = LayoutInflater.from(context).inflate(R.layout.list_daily_index, viewGroup, false);
+        imgUp = (ImageView) view.findViewById(R.id.img_high);
+        imgDown = (ImageView) view.findViewById(R.id.img_low);
+        txtDate = (TextView) view.findViewById(R.id.index_date);
+        txtHigh = (TextView) view.findViewById(R.id.index_high);
+        txtLow = (TextView) view.findViewById(R.id.index_low);
+        txtClosed = (TextView) view.findViewById(R.id.index_closing);
+        txtChanged = (TextView) view.findViewById(R.id.change);
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder viewHolder = (ViewHolder) view.getTag();
         Index model = Index.toObject(cursor);
-//        viewHolder.txtDate.setText(Long.toString(model.getClosing()));
-//        viewHolder.txtVolume.setText(Long.toString(model.getVolume()));
-//        viewHolder.txtValue.setText(Long.toString(model.getValue()));
-//        viewHolder.txtHigh.setText(Long.toString(model.getHigh()));
-//        viewHolder.txtLow.setText(Long.toString(model.getLow()));
-        viewHolder.imgUp.setImageResource(R.drawable.up);
-        viewHolder.imgDown.setImageResource(R.drawable.down);
-        if(model.getChanged() > 1) {
-            viewHolder.imgDown.setVisibility(View.INVISIBLE);
-            viewHolder.imgUp.setVisibility(View.VISIBLE);
+        txtDate.setText(MyHelper.formatDateToShow(Long.toString(model.getDate()), "/"));
+        txtHigh.setText("H: " + model.getHigh());
+        txtLow.setText("L: " + model.getLow());
+        txtChanged.setText( model.getChanged());
+        txtClosed.setText("Closed: " + model.getClosing());
+        if (Float.parseFloat(model.getChanged()) > 10) {
+            imgDown.setVisibility(View.INVISIBLE);
+            imgUp.setVisibility(View.VISIBLE);
+        } else if (Float.parseFloat(model.getChanged()) == 0) {
+            imgDown.setVisibility(View.INVISIBLE);
+            imgUp.setVisibility(View.INVISIBLE);
         } else {
-            viewHolder.imgDown.setVisibility(View.VISIBLE);
-            viewHolder.imgUp.setVisibility(View.INVISIBLE);
+            imgDown.setVisibility(View.VISIBLE);
+            imgUp.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0) return INDEX_CURRENT;
+        if (position == 0) return INDEX_CURRENT;
         else return INDEX_HISTORY;
     }
 

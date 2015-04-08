@@ -49,16 +49,16 @@ public class BaseModel implements BaseColumns {
 
     private String code;
     private String name;
-    private long previousDay;
-    private String date;
-    private long opening;
-    private long closing;
-    private long changed;
-    private long changedPercent;
-    private long high;
-    private long low;
-    private long volume;
-    private long value;
+    private String previousDay;
+    private long date;
+    private String opening;
+    private String closing;
+    private String changed;
+    private String changedPercent;
+    private String high;
+    private String low;
+    private String volume;
+    private String value;
 
     public String getCode() {
         return code;
@@ -76,83 +76,83 @@ public class BaseModel implements BaseColumns {
         this.name = name;
     }
 
-    public long getPreviousDay() {
+    public String getPreviousDay() {
         return previousDay;
     }
 
-    public void setPreviousDay(long previousDay) {
+    public void setPreviousDay(String previousDay) {
         this.previousDay = previousDay;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
-    public long getOpening() {
+    public String getOpening() {
         return opening;
     }
 
-    public void setOpening(long opening) {
+    public void setOpening(String opening) {
         this.opening = opening;
     }
 
-    public long getClosing() {
+    public String getClosing() {
         return closing;
     }
 
-    public void setClosing(long closing) {
+    public void setClosing(String closing) {
         this.closing = closing;
     }
 
-    public long getChanged() {
+    public String getChanged() {
         return changed;
     }
 
-    public void setChanged(long changed) {
+    public void setChanged(String changed) {
         this.changed = changed;
     }
 
-    public long getChangedPercent() {
+    public String getChangedPercent() {
         return changedPercent;
     }
 
-    public void setChangedPercent(long changedPercent) {
+    public void setChangedPercent(String changedPercent) {
         this.changedPercent = changedPercent;
     }
 
-    public long getHigh() {
+    public String getHigh() {
         return high;
     }
 
-    public void setHigh(long high) {
+    public void setHigh(String high) {
         this.high = high;
     }
 
-    public long getLow() {
+    public String getLow() {
         return low;
     }
 
-    public void setLow(long low) {
+    public void setLow(String low) {
         this.low = low;
     }
 
-    public long getVolume() {
+    public String getVolume() {
         return volume;
     }
 
-    public void setVolume(long volume) {
+    public void setVolume(String volume) {
         this.volume = volume;
     }
 
-    public long getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(long value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }
