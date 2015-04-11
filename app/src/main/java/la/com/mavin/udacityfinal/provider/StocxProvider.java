@@ -10,8 +10,11 @@ import android.util.Log;
 
 import la.com.mavin.udacityfinal.database.Contract;
 import la.com.mavin.udacityfinal.database.DbHelper;
+import la.com.mavin.udacityfinal.helper.MyHelper;
 import la.com.mavin.udacityfinal.model.Index;
 import la.com.mavin.udacityfinal.model.IndexCode;
+import la.com.mavin.udacityfinal.model.Stock;
+import la.com.mavin.udacityfinal.model.StockCode;
 
 /**
  * Created by Adsavin on 3/31/2015.
@@ -26,6 +29,15 @@ public class StocxProvider extends ContentProvider {
     public static final int INDEX_LIST = 20;
     public static final int INDEX_GETBYID = 21;
     public static final int INDEX_LISTALL = 22;
+
+    private static final int STOCK = 30;
+    private static final int STOCK_WITH_CODE = 31;
+    private static final int STOCK_WITH_STARTDATE = 32;
+    private static final int STOCK_WITH_START_ENDDATE = 33;
+    public static final int STOCK_LIST = 40;
+    public static final int STOCK_GETBYID = 41;
+    public static final int STOCK_LISTALL = 42;
+
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
 
     @Override
@@ -38,8 +50,9 @@ public class StocxProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
         int match = URI_MATCHER.match(uri);
+        Log.d(LOG_TAG, "ProviderMatch: " + match);
         String indexcode = getIndexCodeFromUri(uri);
-        Log.d(LOG_TAG, "match:" + match + ", codefromuri=" + indexcode);
+        String stockcode = getStockCodeFromUri(uri);
         switch (match) {
             case INDEX_LISTALL:
                 retCursor = dbHelper.getReadableDatabase().query(
@@ -53,18 +66,19 @@ public class StocxProvider extends ContentProvider {
                 );
                 break;
             case INDEX_WITH_CODE:
-                Log.d(LOG_TAG, "IndexWithCode:" + indexcode);
+                sortOrder = "date desc";
                 retCursor = dbHelper.getReadableDatabase().query(
                         Index.TABLE_NAME,
                         projection,
                         Index.COL_CODE + "=?",
-                        new String[] {getIndexCodeFromUri(uri)},
+                        new String[]{getIndexCodeFromUri(uri)},
                         null,
                         null,
                         sortOrder
                 );
                 break;
             case INDEX_WITH_STARTDATE:
+                sortOrder = "date desc";
                 retCursor = dbHelper.getReadableDatabase().query(
                         Index.TABLE_NAME,
                         projection,
@@ -79,6 +93,7 @@ public class StocxProvider extends ContentProvider {
                 );
                 break;
             case INDEX_WITH_START_ENDDATE:
+                sortOrder = "date desc";
                 retCursor = dbHelper.getReadableDatabase().query(
                         Index.TABLE_NAME,
                         projection,
@@ -93,9 +108,63 @@ public class StocxProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
-            default:
-                    throw new UnsupportedOperationException("Unknown Uri: " + uri.toString());
+            case STOCK_LISTALL:
+                retCursor = dbHelper.getReadableDatabase().query(
+                        StockCode.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case STOCK_WITH_CODE:
+                sortOrder = "date desc";
+                retCursor = dbHelper.getReadableDatabase().query(
+                        Stock.TABLE_NAME,
+                        projection,
+                        Stock.COL_CODE + "=?",
+                        new String[]{getIndexCodeFromUri(uri)},
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case STOCK_WITH_STARTDATE:
+                sortOrder = "date desc";
+                retCursor = dbHelper.getReadableDatabase().query(
+                        Stock.TABLE_NAME,
+                        projection,
+                        Stock.COL_CODE + " = ? AND " + Stock.COL_DATE + " > ?",
+                        new String[]{
+                                stockcode,
+                                Long.toString(getDateFromUri(uri, 2))
+                        },
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case STOCK_WITH_START_ENDDATE:
+                sortOrder = "date desc";
+                retCursor = dbHelper.getReadableDatabase().query(
+                        Stock.TABLE_NAME,
+                        projection,
+                        Stock.COL_CODE + " = ? AND " + Stock.COL_DATE + " > ? AND " + Stock.COL_DATE + " < ?",
+                        new String[]{
+                                stockcode,
+                                Long.toString(getDateFromUri(uri, 2)),
+                                Long.toString(getDateFromUri(uri, 3))
+                        },
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
 
+            default:
+                throw new UnsupportedOperationException("Unknown Uri: " + uri.toString());
         }
 
         return retCursor;
@@ -107,7 +176,6 @@ public class StocxProvider extends ContentProvider {
         switch (match) {
             case INDEX_LIST:
                 return IndexCode.CONTENT_TYPE;
-
             case INDEX:
                 return Index.CONTENT_ITEM_TYPE;
             case INDEX_WITH_CODE:
@@ -116,6 +184,18 @@ public class StocxProvider extends ContentProvider {
                 return Index.CONTENT_TYPE;
             case INDEX_WITH_START_ENDDATE:
                 return Index.CONTENT_TYPE;
+
+            case STOCK_LIST:
+                return StockCode.CONTENT_TYPE;
+            case STOCK:
+                return Stock.CONTENT_ITEM_TYPE;
+            case STOCK_WITH_CODE:
+                return Stock.CONTENT_TYPE;
+            case STOCK_WITH_STARTDATE:
+                return Stock.CONTENT_TYPE;
+            case STOCK_WITH_START_ENDDATE:
+                return Stock.CONTENT_TYPE;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -123,7 +203,6 @@ public class StocxProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.d(LOG_TAG, "Insert...");
         long id;
         switch (URI_MATCHER.match(uri)) {
             case INDEX_LIST:
@@ -132,7 +211,7 @@ public class StocxProvider extends ContentProvider {
                         null,
                         values
                 );
-                if(id > 0) {
+                if (id > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                     return IndexCode.getIndexUri(id);
                 } else {
@@ -144,7 +223,31 @@ public class StocxProvider extends ContentProvider {
                         null,
                         values
                 );
-                if(id > 0) {
+                if (id > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return Index.getIndexUri(id);
+                } else {
+                    return null;
+                }
+            case STOCK_LIST:
+                id = dbHelper.getWritableDatabase().insert(
+                        StockCode.TABLE_NAME,
+                        null,
+                        values
+                );
+                if (id > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return StockCode.getStockUri(id);
+                } else {
+                    return null;
+                }
+            case STOCK:
+                id = dbHelper.getWritableDatabase().insert(
+                        Stock.TABLE_NAME,
+                        null,
+                        values
+                );
+                if (id > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                     return Index.getIndexUri(id);
                 } else {
@@ -170,7 +273,6 @@ public class StocxProvider extends ContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = URI_MATCHER.match(uri);
-        Log.d(LOG_TAG, "DB is open" + db.isOpen());
         int count = 0;
         switch (match) {
             case INDEX_LIST:
@@ -192,12 +294,9 @@ public class StocxProvider extends ContentProvider {
                 db.beginTransaction();
                 try {
                     for (ContentValues value : values) {
-                        Cursor cursor = db.query(Index.TABLE_NAME, Index.COLUMNS, "date=?",new String[]{value.getAsString(Index.COL_DATE)},null,null,null);
-                        if(cursor.getCount() == 0) {
-                            long id = db.insert(Index.TABLE_NAME, null, value);
-                            if (id != -1) {
-                                count++;
-                            }
+                        long id = db.insert(Index.TABLE_NAME, null, value);
+                        if (id != -1) {
+                            count++;
                         }
                     }
                     db.setTransactionSuccessful();
@@ -206,14 +305,45 @@ public class StocxProvider extends ContentProvider {
                     db.close();
                 }
                 break;
+
+            case STOCK_LIST:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long id = db.insert(StockCode.TABLE_NAME, null, value);
+                        if (id != -1) {
+                            count++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                    db.close();
+                }
+                break;
+            case STOCK:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long id = db.insert(Stock.TABLE_NAME, null, value);
+                        if (id != -1) {
+                            count++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                    db.close();
+                }
+                break;
+
             default:
                 return super.bulkInsert(uri, values);
         }
-
-        if(count > 0) {
-            Log.d(LOG_TAG, "count=" + count + ", notify");
+        Log.d(LOG_TAG, "count=" + count);
+//        if (count > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
-        }
+//        }
         return count;
     }
 
@@ -229,12 +359,23 @@ public class StocxProvider extends ContentProvider {
         matcher.addURI(authority, Index.PATH + "/#", INDEX_WITH_STARTDATE);
         matcher.addURI(authority, Index.PATH + "/#/#", INDEX_WITH_START_ENDDATE);
 
+        matcher.addURI(authority, StockCode.PATH, STOCK_LIST);
+        matcher.addURI(authority, StockCode.PATH + "/all", STOCK_LISTALL);
+        matcher.addURI(authority, StockCode.PATH + "/#", STOCK_GETBYID);
+
+        matcher.addURI(authority, Stock.PATH, STOCK);
+        matcher.addURI(authority, Stock.PATH + "/*", STOCK_WITH_CODE);
+        matcher.addURI(authority, Stock.PATH + "/#", STOCK_WITH_STARTDATE);
+        matcher.addURI(authority, Stock.PATH + "/#/#", STOCK_WITH_START_ENDDATE);
+
         return matcher;
     }
 
     public static String getIndexCodeFromUri(Uri uri) {
-        Log.d("Provider", "Uri:"+uri.toString());
-        Log.d("Provider", "code"+uri.getPathSegments().get(1).toString());
+        return uri.getPathSegments().get(1).toString();
+    }
+
+    public static String getStockCodeFromUri(Uri uri) {
         return uri.getPathSegments().get(1).toString();
     }
 

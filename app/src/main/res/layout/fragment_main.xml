@@ -16,20 +16,16 @@
         android:layout_height="wrap_content" />
     <TextView
         android:text="@string/app_detail"
+        android:textSize="20dp"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content" />
     <ImageView
-        android:layout_margin="20px"
+        android:layout_margin="30px"
         android:src="@mipmap/ic_launcher"
         android:layout_width="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="@string/app_description"
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content" />
+        android:layout_height="300px" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -49,4 +45,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_about"
+            android:layout_weight="1"
+            android:text="About"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

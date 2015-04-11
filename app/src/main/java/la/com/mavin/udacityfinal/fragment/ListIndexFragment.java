@@ -24,15 +24,13 @@ import la.com.mavin.udacityfinal.task.IndexListTask;
  * Created by adsavin on 30/03/15.
  */
 public class ListIndexFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>  {
-    private final String LOG_TAG = getClass().getSimpleName();
 
+    private final String LOG_TAG = getClass().getSimpleName();
     private IndexListAdapter indexListAdapter;
     private ListView listview_index;
     private int position = ListView.INVALID_POSITION;
     private String SELECTED_KEY = "selected_index_position";
-
     private final int LOADER = 0;
-
 
     public ListIndexFragment() {
     }

@@ -69,13 +69,13 @@ public class IndexDailyActivity extends ActionBarActivity implements IndexFragme
 
     public void showStartDatePickerDialog(View v) {
         DatePickerFragment f = new DatePickerFragment();
-        f.setTxt((TextView) findViewById(R.id.txt_startdate));
+//        f.setTxt((TextView) findViewById(R.id.txt_startdate));
         f.show(getSupportFragmentManager(), "dtStartDate");
     }
 
     public void showEndDatePickerDialog(View v) {
         DatePickerFragment f = new DatePickerFragment();
-        f.setTxt((TextView) findViewById(R.id.txt_enddate));
+//        f.setTxt((TextView) findViewById(R.id.txt_enddate));
         f.show(getSupportFragmentManager(), "dtEndDate");
     }
 }

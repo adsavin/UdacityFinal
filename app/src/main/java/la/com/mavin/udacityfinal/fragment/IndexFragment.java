@@ -3,6 +3,7 @@ package la.com.mavin.udacityfinal.fragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -22,13 +23,14 @@ import la.com.mavin.udacityfinal.R;
 import la.com.mavin.udacityfinal.adapter.IndexAdapter;
 import la.com.mavin.udacityfinal.helper.MyHelper;
 import la.com.mavin.udacityfinal.model.Index;
+import la.com.mavin.udacityfinal.provider.MyContentObserver;
 import la.com.mavin.udacityfinal.provider.StocxProvider;
 import la.com.mavin.udacityfinal.task.IndexTask;
 
 /**
  * Created by Adsavin on 3/30/2015.
  */
-public class IndexFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class IndexFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private final String LOG_TAG = getClass().getSimpleName();
     private IndexAdapter indexAdapter;
     private ListView listview_index;
@@ -43,7 +45,6 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
     private final String[] COLUMNS = {
             Index.TABLE_NAME + "." + Index._ID,
             Index.COL_CHANGED,
-            Index.COL_CHANGED_PERCENT,
             Index.COL_CLOSING,
             Index.COL_CODE,
             Index.COL_DATE,
@@ -51,9 +52,10 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
             Index.COL_LOW,
             Index.COL_NAME,
             Index.COL_OPENING,
-            Index.COL_PREVIOUS_DAY,
             Index.COL_VALUE,
-            Index.COL_VOLUME
+            Index.COL_VOLUME,
+            Index.COL_CHANGED_PERCENT,
+            Index.COL_PREVIOUS_DAY
     };
 
     public IndexFragment() {
@@ -70,45 +72,24 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
             selectedUri = bundle.getParcelable("URI");
         }
         new IndexTask(getActivity()).execute(StocxProvider.getIndexCodeFromUri(selectedUri));
-
         View rootView = inflater.inflate(R.layout.fragment_index_daily, container, false);
-        this.txtStartDate = (EditText) rootView.findViewById(R.id.txt_startdate);
-        this.txtEndDate = (EditText) rootView.findViewById(R.id.txt_enddate);
+//        this.txtStartDate = (EditText) rootView.findViewById(R.id.txt_startdate);
+//        this.txtEndDate = (EditText) rootView.findViewById(R.id.txt_enddate);
         this.listview_index = (ListView) rootView.findViewById(R.id.list_daily_index);
         this.indexAdapter = new IndexAdapter(getActivity(), null, 0);
         this.listview_index.setAdapter(this.indexAdapter);
-        this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
-                if(cursor != null) {
-                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
-                }
-                position = i;
-            }
-        });
-        final String code = StocxProvider.getIndexCodeFromUri(selectedUri);
-
-        this.btnInq = (Button) rootView.findViewById(R.id.btn_index_inq);
-        this.btnInq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String dateStart = txtStartDate.getText().toString().trim().length() > 0 ? MyHelper.formatDateToDb(txtStartDate.getText().toString()) : null;
-                Log.d(LOG_TAG, "StartDate=" + dateStart);
-                String dateEnd = txtEndDate.getText().toString().trim().length() > 0? MyHelper.formatDateToDb(txtEndDate.getText().toString()) : null;
-                Log.d(LOG_TAG, "EndDate=" + dateEnd);
-                if(dateStart != null && dateEnd != null) {
-                    Log.d(LOG_TAG, "NULL - NULL");
-                    new IndexTask(getActivity()).execute(code, dateStart, dateEnd);
-                } else if(dateStart != null && dateEnd == null) {
-                    new IndexTask(getActivity()).execute(code, dateStart);
-                    Log.d(LOG_TAG, "NOTNULL - NULL");
-                } else {
-                    new IndexTask(getActivity()).execute(code);
-                    Log.d(LOG_TAG, "NOT - NOT");
-                }
-            }
-        });
+//        this.listview_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+//                if(cursor != null) {
+//                    ((Callback) getActivity()).onItemSelected(Index.getIndexUri(cursor.getString(Index.CODE)));
+//                }
+//                position = i;
+//            }
+//        });
+//        this.btnInq = (Button) rootView.findViewById(R.id.btn_index_inq);
+//        this.btnInq.setOnClickListener(this);
 
         if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             this.position = savedInstanceState.getInt(SELECTED_KEY);
@@ -137,7 +118,6 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         if(args != null) {
             selectedUri = args.getParcelable("URI");
         }
-        Log.d(LOG_TAG, "SEL:" + selectedUri.toString());
 
         return new CursorLoader(
                 getActivity(),
@@ -147,12 +127,10 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
                 null,
                 Index.COL_CODE
         );
-
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(LOG_TAG, "onLoaderFinished:" + data.getCount());
         this.indexAdapter.swapCursor(data);
         if(this.position != ListView.INVALID_POSITION) {
             this.listview_index.smoothScrollToPosition(this.position);
@@ -164,4 +142,26 @@ public class IndexFragment extends Fragment implements LoaderManager.LoaderCallb
         this.indexAdapter.swapCursor(null);
     }
 
+    @Override
+    public void onClick(View v) {
+        String code = StocxProvider.getIndexCodeFromUri(selectedUri);
+        String dateStart = txtStartDate.getText().toString().trim().length() > 0 ? MyHelper.formatDateToDb(txtStartDate.getText().toString()) : null;
+        String dateEnd = txtEndDate.getText().toString().trim().length() > 0? MyHelper.formatDateToDb(txtEndDate.getText().toString()) : null;
+        if(dateStart != null && dateEnd != null) {
+            this.indexAdapter = new IndexAdapter(getActivity(), null, 0, Index.getIndexUri(code, dateStart, dateEnd));
+            this.listview_index.setAdapter(this.indexAdapter);
+            Log.d(LOG_TAG, Index.getIndexUri(code, dateStart, dateEnd).toString());
+            new IndexTask(getActivity()).execute(code, dateStart, dateEnd);
+        } else if(dateStart != null && dateEnd == null) {
+            this.indexAdapter = new IndexAdapter(getActivity(), null, 0, Index.getIndexUri(code, dateStart));
+            this.listview_index.setAdapter(this.indexAdapter);
+            Log.d(LOG_TAG, Index.getIndexUri(code, dateStart).toString());
+            new IndexTask(getActivity()).execute(code, dateStart);
+        } else {
+            this.indexAdapter = new IndexAdapter(getActivity(), null, 0, Index.getIndexUri(code));
+            this.listview_index.setAdapter(this.indexAdapter);
+            Log.d(LOG_TAG, Index.getIndexUri(code).toString());
+            new IndexTask(getActivity()).execute(code);
+        }
+    }
 }

@@ -12,7 +12,7 @@
     <TextView
         android:text="16/03/2015"
         android:gravity="center"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:id="@+id/index_detail_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -30,14 +30,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:gravity="right"
                     android:text="Opening: "
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="1550.57"
                     android:id="@+id/index_detail_opening"
                     android:layout_width="match_parent"
@@ -50,13 +50,13 @@
                 android:layout_height="match_parent">
                 <TextView
                     android:gravity="right"
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="Closing: "
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="1550.57"
                     android:id="@+id/index_detail_closing"
                     android:layout_width="match_parent"
@@ -75,14 +75,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="High: "
                     android:gravity="right"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="1564.44"
                     android:id="@+id/index_detail_high"
                     android:layout_width="match_parent"
@@ -94,14 +94,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:gravity="right"
                     android:text="Low: "
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
                 <TextView
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="1564.44"
                     android:id="@+id/index_detail_low"
                     android:layout_width="match_parent"
@@ -124,6 +124,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="12.59"
+            android:textSize="20dp"
             android:id="@+id/index_detail_changed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -131,6 +132,7 @@
             android:text=" (0.16%)"
             android:id="@+id/index_detail_percent"
             android:layout_weight="1"
+            android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -148,18 +150,21 @@
             android:gravity="right"
             android:layout_weight="3"
             android:text="Volume: "
+            android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:gravity="center"
             android:layout_weight="2"
             android:text="15,000"
+            android:textSize="20dp"
             android:id="@+id/index_detail_volume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:layout_weight="3"
             android:text=" Share(s)"
+            android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -170,12 +175,14 @@
         <TextView
             android:gravity="right"
             android:layout_weight="3"
+            android:textSize="20dp"
             android:text="Value: "
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:gravity="center"
             android:layout_weight="2"
+            android:textSize="20dp"
             android:text="15,000,000"
             android:id="@+id/index_detail_value"
             android:layout_width="match_parent"
@@ -183,6 +190,7 @@
         <TextView
             android:layout_weight="3"
             android:text=" LAK"
+            android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

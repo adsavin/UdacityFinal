@@ -81,7 +81,6 @@ public class IndexListTask extends AsyncTask<Void, Void, Void> {
                 }
                 for (int i = j; i < indexList.length(); i++) {
                     JSONObject o = indexList.getJSONObject(i);
-
                     ContentValues value = new ContentValues();
                     value.put(IndexCode.COL_CODE, o.getString(IndexCode.COL_CODE));
                     value.put(IndexCode.COL_NAME, o.getString(IndexCode.COL_NAME));

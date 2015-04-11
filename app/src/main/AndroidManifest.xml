@@ -12,11 +12,10 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".IndexListActivity"
@@ -50,10 +49,44 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="la.com.mavin.udacityfinal.IndexDailyActivity" />
         </activity>
+        <activity
+            android:name=".StockDailyActivity"
+            android:label="@string/title_activity_stock_daily"
+            android:parentActivityName=".StockListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="la.com.mavin.udacityfinal.StockListActivity" />
+        </activity>
 
         <provider
-            android:authorities="la.com.mavin.udacityfinal"
-            android:name=".provider.StocxProvider" />
+            android:name=".provider.StocxProvider"
+            android:authorities="la.com.mavin.udacityfinal" />
+
+        <activity
+            android:name=".StockDetailActivity"
+            android:label="@string/title_activity_stock_detail"
+            android:parentActivityName=".StockDailyActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="la.com.mavin.udacityfinal.StockDailyActivity" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="la.com.mavin.udacityfinal.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">StocX</string>
     <string name="welcome">Welcome to StocX</string>
-    <string name="app_detail">Your Stock Market Information Retriever</string>
-    <string name="app_description">Designed and Developed by Mavins,\nLaoDebug IT Solution Limited\nlaodebug@gmail.com</string>
+    <string name="app_detail">Stock Market Information Retriever</string>
+    <string name="app_description">Designed and Developed by:\nAdsavin THEPPHAKAN,\n#DevStudyJam #GDGVientiane\nlaodebug@gmail.com</string>
     <string name="action_settings">Settings</string>
 
     <string name="agree">By Clicking OK, it means you are agree to terms and condition of the Lao Securities Exchange</string>
@@ -13,4 +13,8 @@
     <string name="title_activity_index_daily">IndexDailyActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_index_detail">IndexDetailActivity</string>
+    <string name="title_activity_stock_daily">StockDailyActivity</string>
+    <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>
